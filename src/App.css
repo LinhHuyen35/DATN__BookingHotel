@@ -10,7 +10,8 @@
   --eoe2e6: #e0e2e6;
   --secondBlack: #484848;
   /* --font-family: 'CircularStd'; */
-  --font-family: "Montserrat";
+/*   --font-family: "Montserrat"; */
+  --font-family: "Inter-fallback";
   --font-allision: "Allision_Script";
 }
 
