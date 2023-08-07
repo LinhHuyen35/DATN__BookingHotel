@@ -42,9 +42,14 @@ a {
   text-decoration: none;
 }
 
-@font-face {
+/* @font-face {
   font-family: var(--font-family);
   src: url("../src/assets/Fonts/CircularStd-Black.woff");
+} */
+@font-face {
+  font-family: 'Inter-fallback';
+  size-adjust: 107%;
+  src: local('Arial');
 }
 
 @font-face {
