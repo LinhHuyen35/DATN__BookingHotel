@@ -10,13 +10,11 @@
   --eoe2e6: #e0e2e6;
   --secondBlack: #484848;
   /* --font-family: 'CircularStd'; */
-  --font-family: "Montserrat";
-  --font-allision: "Allision_Script";
-}
-@font-face {
+/*   --font-family: "Montserrat"; */
   font-family: 'Inter-fallback';
   size-adjust: 107%;
   src: local('Arial');
+  --font-allision: "Allision_Script";
 }
 
 * {
