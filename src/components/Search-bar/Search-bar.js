@@ -7,13 +7,14 @@ import SearchField from "./SearchField";
 const cx = classNames.bind(styles);
 
 function SearchBar() {
-  const myObject = ["5 stars", "4 stars", "3 stars"];
-
+  const myObject = ["5", "4", "3"];
+  const [param, setParam] = useState({});
   const [state, changeState] = useState({
     activeObject: myObject[0],
   });
   function handleClick(index, element) {
     changeState({ ...state, activeObject: myObject[index] });
+    setParam({ ...param, star_level: myObject[index] });
   }
 
   function toggleActive(index) {
@@ -39,12 +40,16 @@ function SearchBar() {
                 handleClick(index, element);
               }}
             >
-              {element}
+              {element} stars
             </li>
           ))}
         </ul>
       </div>
-      <SearchField star={state.activeObject}></SearchField>
+      <SearchField
+        star={state.activeObject}
+        param={param}
+        setParam={setParam}
+      ></SearchField>
     </div>
   );
 }

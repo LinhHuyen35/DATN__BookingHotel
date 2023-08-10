@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
-import styles from "./ReservationStatus.module.css";
-import HistoryItem from "../../../components/HistoryItem/HistoryItem";
-import classNames from "classnames/bind";
-import LayoutPrimary from "layouts/LayoutPrimary";
+import React, { useEffect, useState } from 'react';
+import styles from './ReservationStatus.module.css';
+import HistoryItem from '../../../components/HistoryItem/HistoryItem';
+import classNames from 'classnames/bind';
+import LayoutPrimary from 'layouts/LayoutPrimary';
 
 import {
   addSearchPastData,
@@ -11,24 +11,26 @@ import {
   getApprovedHistory,
   getPastData,
   getSearch,
-} from "features/booked/historyBookingSlice";
-import { useDispatch, useSelector } from "react-redux";
+  getAllHistory,
+  getCustomerPast,
+} from 'features/booked/historyBookingSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
-const cx = classNames.bind(styles);
+const cx = classNames.bind(styles); //Doi de k trung css
 
 function ReservationStatus() {
   const dispatch = useDispatch();
+  // const data=userSelector((state) => state.userSlice);
   const pastData = useSelector(getPastData);
-
+  const data = useSelector(getCustomerPast);
   const searchData = useSelector(getSearch);
   const approved = useSelector(getApprovedHistory);
   const user = (() => {
-    const storageRoomsData = JSON.parse(localStorage.getItem("userData"));
+    const storageRoomsData = JSON.parse(localStorage.getItem('userData'));
     return storageRoomsData ?? [];
   })();
-
   const [tab, setTab] = useState(true);
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState('');
 
   const handleChangeSearchInput = (e) => {
     setQuery(e.target.value);
@@ -45,21 +47,21 @@ function ReservationStatus() {
             item.hotel.name.toUpperCase().indexOf(x.toUpperCase()) !== -1 ||
             item.hotel.name
               .toUpperCase()
-              .indexOf(x.split("").join(" ").toUpperCase()) !== -1
+              .indexOf(x.split('').join(' ').toUpperCase()) !== -1
           );
         });
         dispatch(addSearchData(newHis));
       }
     } else {
       if (x.length === 0) {
-        dispatch(addSearchPastData(pastData));
+        dispatch(addSearchPastData(data));
       } else {
         let newHis = pastData.filter((item) => {
           return (
             item.hotel.name.toUpperCase().indexOf(x.toUpperCase()) !== -1 ||
             item.hotel.name
               .toUpperCase()
-              .indexOf(x.split("").join(" ").toUpperCase()) !== -1
+              .indexOf(x.split('').join(' ').toUpperCase()) !== -1
           );
         });
         dispatch(addSearchPastData(newHis));
@@ -70,7 +72,7 @@ function ReservationStatus() {
   const handleSetTab = () => {
     setTab(!tab);
   };
-  const tabActive = cx("tab-active");
+  const tabActive = cx('tab-active');
 
   useEffect(() => {
     dispatch(fetchHistoryBooking({ userId: user.id }));
@@ -78,25 +80,25 @@ function ReservationStatus() {
 
   return (
     <LayoutPrimary>
-      <div className={cx("reservation-container")}>
-        <h2 className={cx("top-title")}>Reservation</h2>
-        <div className={cx("history")}>
-          <div className={cx("history-wrapper")}>
+      <div className={cx('reservation-container')}>
+        <h2 className={cx('top-title')}>Reservation</h2>
+        <div className={cx('history')}>
+          <div className={cx('history-wrapper')}>
             <div
-              className={cx("history-title", tab && tabActive)}
+              className={cx('history-title', tab && tabActive)}
               onClick={handleSetTab}
             >
               Upcoming
             </div>
             <div
-              className={cx("history-title", !tab && tabActive)}
+              className={cx('history-title', !tab && tabActive)}
               onClick={handleSetTab}
             >
               Past
             </div>
           </div>
-          <div className={cx("search-wrapper")}>
-            <i className={cx("search-icon-container")}>
+          <div className={cx('search-wrapper')}>
+            <i className={cx('search-icon-container')}>
               <svg
                 width="16"
                 height="16"
@@ -118,7 +120,7 @@ function ReservationStatus() {
               </svg>
             </i>
             <input
-              className={cx("search")}
+              className={cx('search')}
               placeholder="Search"
               value={query}
               onChange={handleChangeSearchInput}
@@ -126,7 +128,7 @@ function ReservationStatus() {
           </div>
         </div>
         {tab ? (
-          <div className={cx("status")}>
+          <div className={cx('status')}>
             {searchData?.length > 0 &&
               searchData.map((item) => (
                 <HistoryItem
@@ -138,7 +140,7 @@ function ReservationStatus() {
               ))}
           </div>
         ) : (
-          <div className={cx("status")}>
+          <div className={cx('status')}>
             {pastData?.length > 0 &&
               pastData.map((item) => (
                 <HistoryItem

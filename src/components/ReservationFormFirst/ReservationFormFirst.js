@@ -1,22 +1,22 @@
-import React, { useEffect, useState } from "react";
-import classNames from "classnames/bind";
-import styles from "./ReservationFormFirst.module.css";
-import ReservationItem from "../ReservationItem/ReservationItem";
-import { AiOutlineCalendar } from "react-icons/ai";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import Button from "../Button/Button";
-import { IconContext } from "react-icons/lib";
-import { useLocation } from "react-router-dom";
-import axios from "axios";
-import { differenceInDays } from "date-fns";
-import ConfirmModal from "module/modal/confirmModal";
+import React, { useEffect, useState } from 'react';
+import classNames from 'classnames/bind';
+import styles from './ReservationFormFirst.module.css';
+import ReservationItem from '../ReservationItem/ReservationItem';
+import { AiOutlineCalendar } from 'react-icons/ai';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import Button from '../Button/Button';
+import { IconContext } from 'react-icons/lib';
+import { useLocation } from 'react-router-dom';
+import axios from 'axios';
+import { differenceInDays } from 'date-fns';
+import ConfirmModal from 'module/modal/confirmModal';
 const cx = classNames.bind(styles);
 
 function ReservationFormFirst({ handleSetCheckBill, userData }) {
   const [bookedData, setBookedData] = useState({
-    start_date: "",
-    end_date: "",
+    start_date: '',
+    end_date: '',
     customer_id: userData.id,
     bookedroom: [],
   });
@@ -56,7 +56,7 @@ function ReservationFormFirst({ handleSetCheckBill, userData }) {
   }, [data.id, cart, endDate, startDate, totalDay, totalPrices, totalFee, fee]);
 
   function padTo2Digits(num) {
-    return num.toString().padStart(2, "0");
+    return num.toString().padStart(2, '0');
   }
 
   function formatDate(date) {
@@ -65,11 +65,11 @@ function ReservationFormFirst({ handleSetCheckBill, userData }) {
         date.getFullYear(),
         padTo2Digits(date.getMonth() + 1),
         padTo2Digits(date.getDate()),
-      ].join("-") +
-      " " +
-      ["00", "00", "00"].join(":") +
-      "." +
-      ["000", "00"].join(" +")
+      ].join('-') +
+      ' ' +
+      ['00', '00', '00'].join(':') +
+      '.' +
+      ['000', '00'].join(' +')
     );
   }
 
@@ -84,20 +84,20 @@ function ReservationFormFirst({ handleSetCheckBill, userData }) {
 
   const addItem = () => {
     if (formatDate(endDate) === formatDate(startDate)) {
-      return alert("Dates are not duplicated");
+      return alert('Dates are not duplicated');
     }
     if (differenceInDays(endDate, startDate) + 1 === 0) {
-      return alert("Checkout date must be after checkin date ");
+      return alert('Checkout date must be after checkin date ');
     }
     setShowRoomStyle(!showRoomStyle);
   };
 
   const addRoom = (type) => {
     if (formatDate(endDate) === formatDate(startDate)) {
-      return alert("Dates are not duplicated");
+      return alert('Dates are not duplicated');
     }
     if (differenceInDays(endDate, startDate) + 1 === 0) {
-      return alert("Checkout date must be after checkin date ");
+      return alert('Checkout date must be after checkin date ');
     }
     const newRoom = rooms.filter((room) => room.type === type);
     const { price, id } = newRoom[0];
@@ -123,7 +123,7 @@ function ReservationFormFirst({ handleSetCheckBill, userData }) {
     const roomData = {
       check_in: formatDate(startDate),
       check_out: formatDate(endDate),
-      price: item.price * (item.quantity + 1) * totalDay,
+      price: item.price,
       room_id: item.id,
       quantity: item.quantity + 1,
     };
@@ -150,13 +150,13 @@ function ReservationFormFirst({ handleSetCheckBill, userData }) {
   };
   const handleDecrease = (item) => {
     if (item.quantity === 1) {
-      return alert("The quantity must be at least 1");
+      return alert('The quantity must be at least 1');
     }
 
     const roomData = {
       check_in: formatDate(startDate),
       check_out: formatDate(endDate),
-      price: item.price * (item.quantity - 1) * totalDay,
+      price: item.price,
       room_id: item.id,
       quantity: item.quantity - 1,
     };
@@ -183,16 +183,21 @@ function ReservationFormFirst({ handleSetCheckBill, userData }) {
   };
   const handleFetchData = async () => {
     if (bookedData.bookedroom.length === 0) {
-      return alert("Booking must have at least 1 room");
+      return alert('Booking must have at least 1 room');
     }
     if (formatDate(endDate) === formatDate(startDate)) {
-      return alert("Dates are not duplicated");
+      return alert('Dates are not duplicated');
     }
     if (differenceInDays(endDate, startDate) + 1 <= 0) {
-      return alert("Checkout date must be after checkin date ");
+      return alert('Checkout date must be after checkin date ');
     }
 
     try {
+      console.log({
+        ...bookedData,
+        start_date: formatDate(startDate),
+        end_date: formatDate(endDate),
+      });
       const res = await axios.post(
         `${process.env.REACT_APP_HTTSPURL}:${process.env.REACT_APP_BOOKING}/create_booking`,
         JSON.stringify({
@@ -203,18 +208,18 @@ function ReservationFormFirst({ handleSetCheckBill, userData }) {
       );
       cart.length > 0
         ? handleSetCheckBill()
-        : alert("Vui long chon phong truoc");
+        : alert('Vui long chon phong truoc');
       const fakeBookingData = {
         id: res.data.id,
         bookedData,
       };
-      localStorage.setItem("bookingData", JSON.stringify(fakeBookingData));
+      localStorage.setItem('bookingData', JSON.stringify(fakeBookingData));
     } catch (error) {
       console.log(error);
     }
   };
   return (
-    <div className={cx("reservation-form-first")}>
+    <div className={cx('reservation-form-first')}>
       {showConfirmation && (
         <ConfirmModal
           hiddenFunction={handleFetchData}
@@ -222,37 +227,37 @@ function ReservationFormFirst({ handleSetCheckBill, userData }) {
           message="Confirm creating the order"
         />
       )}
-      <div className={cx("reservation-top")}>
+      <div className={cx('reservation-top')}>
         {showRoomStyle && (
-          <ul className={cx("rooms-list")}>
-            {rooms.filter((room) => room.type === "Single").length > 0 &&
-              cart.filter((room) => room.type === "Single").length === 0 && (
+          <ul className={cx('rooms-list')}>
+            {rooms.filter((room) => room.type === 'Single').length > 0 &&
+              cart.filter((room) => room.type === 'Single').length === 0 && (
                 <li
-                  className={cx("room-list-item")}
+                  className={cx('room-list-item')}
                   onClick={() => {
-                    addRoom("Single");
+                    addRoom('Single');
                   }}
                 >
                   Single
                 </li>
               )}
-            {rooms.filter((room) => room.type === "Double").length > 0 &&
-              cart.filter((room) => room.type === "Double").length === 0 && (
+            {rooms.filter((room) => room.type === 'Double').length > 0 &&
+              cart.filter((room) => room.type === 'Double').length === 0 && (
                 <li
-                  className={cx("room-list-item")}
+                  className={cx('room-list-item')}
                   onClick={() => {
-                    addRoom("Double");
+                    addRoom('Double');
                   }}
                 >
                   Double
                 </li>
               )}
-            {rooms.filter((room) => room.type === "VIP").length > 0 &&
-              cart.filter((room) => room.type === "VIP").length === 0 && (
+            {rooms.filter((room) => room.type === 'VIP').length > 0 &&
+              cart.filter((room) => room.type === 'VIP').length === 0 && (
                 <li
-                  className={cx("room-list-item")}
+                  className={cx('room-list-item')}
                   onClick={() => {
-                    addRoom("VIP");
+                    addRoom('VIP');
                   }}
                 >
                   VIP
@@ -260,11 +265,11 @@ function ReservationFormFirst({ handleSetCheckBill, userData }) {
               )}
           </ul>
         )}
-        <Button className={cx("add")} medium onClick={addItem}>
+        <Button className={cx('add')} medium onClick={addItem}>
           Add Room
         </Button>
       </div>
-      <div className={cx("reservation-item--container")}>
+      <div className={cx('reservation-item--container')}>
         {cart.length > 0 &&
           cart.map((item) => (
             <ReservationItem
@@ -278,57 +283,57 @@ function ReservationFormFirst({ handleSetCheckBill, userData }) {
             />
           ))}
       </div>
-      <div className={cx("bill")}>
-        <div className={cx("col-3")}>
-          <h2 className={cx("top-heading")}>Details</h2>
-          <div className={cx("total-days")}>
-            <p className={cx("total")}>Total Days: {totalDay}</p>
+      <div className={cx('bill')}>
+        <div className={cx('col-3')}>
+          <h2 className={cx('top-heading')}>Details</h2>
+          <div className={cx('total-days')}>
+            <p className={cx('total')}>Total Days: {totalDay}</p>
           </div>
         </div>
-        <div className={cx("col-3")}>
-          <h2 className={cx("top-heading")}>Date</h2>
-          <div className={cx("date")}>
-            <div className={cx("check")}>Check-in:</div>
-            <label className={cx("label")}>
-              <IconContext.Provider value={{ color: "blue" }}>
+        <div className={cx('col-3')}>
+          <h2 className={cx('top-heading')}>Date</h2>
+          <div className={cx('date')}>
+            <div className={cx('check')}>Check-in:</div>
+            <label className={cx('label')}>
+              <IconContext.Provider value={{ color: 'blue' }}>
                 <div>
                   <AiOutlineCalendar />
                 </div>
               </IconContext.Provider>
               <DatePicker
-                wrapperClassName={cx("datePicker")}
+                wrapperClassName={cx('datePicker')}
                 selected={startDate}
                 onChange={(date) => setStartDate(date)}
               />
             </label>
           </div>
-          <div className={cx("date")}>
-            <div className={cx("check")}>Check-out:</div>
-            <label className={cx("label")}>
-              <IconContext.Provider value={{ color: "blue" }}>
+          <div className={cx('date')}>
+            <div className={cx('check')}>Check-out:</div>
+            <label className={cx('label')}>
+              <IconContext.Provider value={{ color: 'blue' }}>
                 <div>
                   <AiOutlineCalendar />
                 </div>
               </IconContext.Provider>
               <DatePicker
-                wrapperClassName={cx("datePicker")}
+                wrapperClassName={cx('datePicker')}
                 selected={endDate}
                 onChange={(date) => setEndDate(date)}
               />
             </label>
           </div>
         </div>
-        <div className={cx("col-3", "cost")}>
-          <h2 className={cx("top-heading", "price")}>Price</h2>
+        <div className={cx('col-3', 'cost')}>
+          <h2 className={cx('top-heading', 'price')}>Price</h2>
 
-          <div className={cx("fee")}>
+          <div className={cx('fee')}>
             <p>Fee: </p>
             <p>{fee}</p>
           </div>
-          <div className={cx("fee")}>
+          <div className={cx('fee')}>
             <p>Tax: 10%</p>
           </div>
-          <div className={cx("fee", "total-price")}>
+          <div className={cx('fee', 'total-price')}>
             <p>Totals fee: {totalFee}</p>
             <p></p>
           </div>
@@ -340,7 +345,7 @@ function ReservationFormFirst({ handleSetCheckBill, userData }) {
         onClick={() => {
           setShowConfirmation(true);
         }}
-        className={cx("custom-button")}
+        className={cx('custom-button')}
       >
         Next
       </Button>

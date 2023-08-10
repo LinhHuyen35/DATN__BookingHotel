@@ -1,7 +1,7 @@
-import React from "react";
-import { useField } from "formik";
-import styles from "../MyInput/MyInput.module.css";
-import classNames from "classnames/bind";
+import React from 'react';
+import { useField } from 'formik';
+import styles from '../MyInput/MyInput.module.css';
+import classNames from 'classnames/bind';
 const cx = classNames.bind(styles);
 
 function MyInput({
@@ -25,11 +25,11 @@ function MyInput({
     <div
       className={
         account
-          ? cx("account-container", classCustom)
-          : cx("container", classCustom)
+          ? cx('account-container', classCustom)
+          : cx('container', classCustom)
       }
     >
-      <label className={!account ? cx("label") : cx("account-edit")}>
+      <label className={!account ? cx('label') : cx('account-edit')}>
         {label}
       </label>
       <input
@@ -40,7 +40,7 @@ function MyInput({
         {...props}
       />
       {meta.touched && meta.error ? (
-        <div className={cx("error")}>{meta.error}</div>
+        <div className={cx('error')}>{meta.error}</div>
       ) : null}
       {children}
     </div>

@@ -4,66 +4,66 @@ import {
   faLock,
   faPhone,
   faUser,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
-import ReactHookFormInput from "../../components/form/reactHookFormInput";
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import ReactHookFormInput from '../../components/form/reactHookFormInput';
 
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-import ReactHookFormSelect from "../../components/form/reactHookFormSelect";
-import axios from "axios";
-import { useNavigate } from "react-router";
-import FormBody from "../form/formbody";
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import ReactHookFormSelect from '../../components/form/reactHookFormSelect';
+import axios from 'axios';
+import { useNavigate } from 'react-router';
+import FormBody from '../form/formbody';
 
 const phoneRegex = /(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})\b/;
 
 const schema = yup
   .object()
   .shape({
-    name: yup.string().required("Please Enter Your Name"),
+    name: yup.string().required('Please Enter Your Name'),
     phone: yup
       .string()
-      .required("Please Enter Your Phone number")
-      .matches(phoneRegex, "Please enter a real phone number"),
+      .required('Please Enter Your Phone number')
+      .matches(phoneRegex, 'Please enter a real phone number'),
     email: yup
       .string()
-      .email("Please Enter a Valid Email")
-      .required("Please Enter Your Email"),
+      .email('Please Enter a Valid Email')
+      .required('Please Enter Your Email'),
     password: yup
       .string()
-      .required("Password is required")
-      .min(8, "Password must have at least 8 characters"),
+      .required('Password is required')
+      .min(8, 'Password must have at least 8 characters'),
     repassword: yup
       .string()
-      .oneOf([yup.ref("password"), null], "Passwords must match")
-      .required("Please Re-enter Your password"),
-    gender: yup.string().required("Please Enter Your Gender"),
+      .oneOf([yup.ref('password'), null], 'Passwords must match')
+      .required('Please Re-enter Your password'),
+    gender: yup.string().required('Please Enter Your Gender'),
   })
   .required();
 
-const SignUp = ({ role = "customer" }) => {
+const SignUp = ({ role = 'customer' }) => {
   const [formData, setFormData] = useState([]);
   const [otpView, setOtpView] = useState(false);
-  const [otp, setOtp] = useState("000000");
-  const [otpError, setOtpError] = useState("");
+  const [otp, setOtp] = useState('000000');
+  const [otpError, setOtpError] = useState('');
   const [accountData, setAccountData] = useState({
     role: role,
-    description: "",
+    description: '',
     user: {
-      name: "",
-      email: "",
-      phone: "",
-      note: "",
+      name: '',
+      email: '',
+      phone: '',
+      note: '',
       avatar:
-        "https://img.freepik.com/free-psd/3d-illustration-person-with-sunglasses_23-2149436188.jpg?size=626&ext=jpg&ga=GA1.2.1706574637.1686470385&semt=ais",
-      gender: "male",
+        'https://img.freepik.com/free-psd/3d-illustration-person-with-sunglasses_23-2149436188.jpg?size=626&ext=jpg&ga=GA1.2.1706574637.1686470385&semt=ais',
+      gender: 'male',
       account_id: 0,
       address: {
-        district: "Quận Từ Liêm",
-        province: "Hà Nội",
-        detail_address: "98 Quận Từ Liêm, Hà Nội",
+        district: 'Quận Từ Liêm',
+        province: 'Hà Nội',
+        detail_address: '98 Quận Từ Liêm, Hà Nội',
       },
     },
   });
@@ -103,12 +103,12 @@ const SignUp = ({ role = "customer" }) => {
       setTimeout(() => {
         resolve();
         reset({
-          name: "",
-          phone: "",
-          email: "",
-          password: "",
-          repassword: "",
-          gender: "male",
+          name: '',
+          phone: '',
+          email: '',
+          password: '',
+          repassword: '',
+          gender: 'male',
         });
       }, 2000);
     });
@@ -126,10 +126,10 @@ const SignUp = ({ role = "customer" }) => {
       ...accountData,
       user: { ...accountData.user, account_id: res.data.id },
     });
-    console.log("creating");
+    console.log('creating');
     return res.data.id;
   };
-
+  // {destructuring}
   const handleConfirmCreateAccount = async (id) => {
     await axios.post(
       `${process.env.REACT_APP_HTTSPURL}/customer`,
@@ -145,8 +145,8 @@ const SignUp = ({ role = "customer" }) => {
       })
     );
 
-    alert("Create Account Succesfully");
-    navigate("/logincus");
+    alert('Create Account Succesfully');
+    navigate('/logincus');
   };
 
   const handleCheckOtp = async () => {
@@ -158,7 +158,7 @@ const SignUp = ({ role = "customer" }) => {
         handleConfirmCreateAccount(id);
       });
     } else if (res.data.code === 400) {
-      setOtpError("Please Enter The Correct Number");
+      setOtpError('Please Enter The Correct Number');
     }
   };
 

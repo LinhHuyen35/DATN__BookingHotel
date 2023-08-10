@@ -22,6 +22,8 @@ import {
 } from "react-icons/ai";
 import DetailTable from "module/table/DetailTable";
 import { IconContext } from "react-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSort, faSortDown } from "@fortawesome/free-solid-svg-icons";
 
 const cx = classNames.bind(styles);
 
@@ -29,24 +31,42 @@ function Details({ wishlist, handleLike }) {
   const [pageNumber, setPageNumber] = useState(1);
   const [comments, setComments] = useState([]);
   const [detailsHotel, setDetailsHotel] = useState([]);
+  const [isNewest, setIsNewest] = useState(true);
   const { id } = useParams();
 
-  async function fetchData(page) {
+  async function fetchData(page, asc) {
     const res = await axios.get(
-      `${process.env.REACT_APP_HTTSPURL}:${process.env.REACT_APP_HOTEL}/hotel/${id}/comments?page=${page}&limit=4&sort_asc=0`
+      `${process.env.REACT_APP_HTTSPURL}:${process.env.REACT_APP_HOTEL}/hotel/${id}/comments?page=${page}&limit=4&sort_asc=${asc}`
     );
     console.log(res.data.items);
     return res.data.items ? res.data.items : [];
   }
 
+  const handleReverseComments = () => {
+    if (isNewest === true) {
+      setIsNewest(false);
+      setPageNumber(1);
+      fetchData(pageNumber, 1).then((comment) => {
+        setComments(comment);
+      });
+    } else {
+      setIsNewest(true);
+      setPageNumber(1);
+      fetchData(pageNumber, 0).then((comment) => {
+        setComments(comment);
+      });
+    }
+  };
+
   const handleLoadMore = () => {
-    fetchData(pageNumber).then((comment) => {
+    fetchData(pageNumber + 1, 1).then((comment) => {
       const newCmt = [...comments, ...comment];
       setPageNumber(pageNumber + 1);
       setComments(newCmt);
     });
   };
   console.log(comments);
+
   useEffect(() => {
     axios
       .get(
@@ -308,13 +328,19 @@ function Details({ wishlist, handleLike }) {
       <div className="px-20">
         <div className={cx("reviews")}>
           <div className={cx("reviews-heading")}>
-            <div className={cx("reviews-star")}>
-              <h2 className={cx("heading")}>Reviews</h2>
-              <i className={cx("reviews-icon")}>
-                <AiFillStar />
-              </i>
+            <div className="flex items-center gap-4">
+              <div className={cx("reviews-star")}>
+                <h2 className={cx("heading")}>Reviews</h2>
+                <i className={cx("reviews-icon")}>
+                  <AiFillStar />
+                </i>
+              </div>
+              <div className={cx("reviews-rate")}>5.0</div>
             </div>
-            <div className={cx("reviews-rate")}>5.0</div>
+            <div className="cursor-pointer" onClick={handleReverseComments}>
+              <span>Sort: </span>
+              <FontAwesomeIcon icon={faSort} />
+            </div>
           </div>
 
           <div className={cx("reviewers-container")}>

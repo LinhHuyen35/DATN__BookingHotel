@@ -1,18 +1,19 @@
-import React from "react";
-import classNames from "classnames/bind";
-import styles from "./Card.module.css";
-import { IconContext } from "react-icons";
+import React from 'react';
+import classNames from 'classnames/bind';
+import styles from './Card.module.css';
+import { IconContext } from 'react-icons';
 import {
   AiOutlineHeart,
   AiFillHeart,
   AiOutlineCar,
   AiOutlineClose,
-} from "react-icons/ai";
-import { IoAdd } from "react-icons/io5";
-import { BiBed, BiBath } from "react-icons/bi";
-import { MdPets } from "react-icons/md";
-import { Link, useNavigate } from "react-router-dom";
-import Button from "../Button/Button";
+} from 'react-icons/ai';
+import { IoAdd } from 'react-icons/io5';
+import { BiBed, BiBath } from 'react-icons/bi';
+import { MdPets } from 'react-icons/md';
+import { Link, useNavigate } from 'react-router-dom';
+import Button from '../Button/Button';
+import StarIcons from 'module/Icons/StarIcon';
 const cx = classNames.bind(styles);
 
 function Card({
@@ -22,12 +23,13 @@ function Card({
   wishlists = false,
   add = false,
   host = false,
-  fragment = cx("fragment"),
+  fragment = cx('fragment'),
   desc,
   children,
   className,
   mb300,
   name,
+
   deleteHotel,
   address,
   thumbnail,
@@ -51,15 +53,15 @@ function Card({
 
   let classes =
     featured && !guide && !row
-      ? cx("feature-container")
+      ? cx('feature-container')
       : featured && guide && !row
-      ? cx("guide-container")
+      ? cx('guide-container')
       : row && featured && !guide
-      ? cx("feature-row")
+      ? cx('feature-row')
       : wishlists && !row && !featured && !guide
-      ? cx("wishlists-container")
-      : cx("card-container");
-  const cardClasses = cx("card", {
+      ? cx('wishlists-container')
+      : cx('card-container');
+  const cardClasses = cx('card', {
     featured,
     wishlists,
     row,
@@ -69,15 +71,15 @@ function Card({
   });
   let src = `/Details/${id}`;
   if (add) {
-    src = "/HomeBooking";
+    src = '/HomeBooking';
   } else if (wishlists && !host) {
-    src = "/Wishlists";
+    src = '/Wishlists';
   } else if (wishlists && host) {
-    src = "/AddRoom";
+    src = '/AddRoom';
   }
 
   const toUpdateHotel = () => {
-    navigate("/UpdateHotel", { state: { hotel: x } });
+    navigate('/UpdateHotel', { state: { hotel: x } });
   };
   return (
     <div className={fragment}>
@@ -86,10 +88,10 @@ function Card({
           onClick={() => {
             handleLike(data);
           }}
-          className={cx("icon-heart")}
+          className={cx('icon-heart')}
         >
           {itemExist ? (
-            <IconContext.Provider value={{ color: "red" }}>
+            <IconContext.Provider value={{ color: 'red' }}>
               <AiFillHeart />
             </IconContext.Provider>
           ) : (
@@ -98,58 +100,63 @@ function Card({
         </div>
       )}
       {wishlists && !add && !host && (
-        <i className={cx("close-icon")} {...props}>
+        <i className={cx('close-icon')} {...props}>
           <AiOutlineClose />
         </i>
       )}
 
-      <Link to={src} state={host ? { id: x.id } : { searchValue: "Ha Noi" }}>
+      <Link to={src} state={host ? { id: x.id } : { searchValue: 'Ha Noi' }}>
         <div
           className={cardClasses}
           style={{ backgroundImage: `url(${thumbnail})` }}
         >
           {featured && !row && !guide && (
-            <div className={cx("feature-information")}>
-              <span className={cx("price")}>$ 1000 - 5000 USD</span>
-              <div className={cx("circle-wrapper")}>
-                <span className={cx("circle")}></span>
-                <span className={cx("circle")}></span>
-                <span className={cx("circle")}></span>
-                <span className={cx("circle")}></span>
+            <div className={cx('feature-information')}>
+              <span className={cx('price')}>$ 1000 - 5000 USD</span>
+              <div className={cx('circle-wrapper')}>
+                <span className={cx('circle')}></span>
+                <span className={cx('circle')}></span>
+                <span className={cx('circle')}></span>
+                <span className={cx('circle')}></span>
               </div>
             </div>
           )}
           {add ? (
-            <i className={cx("add-icon")} {...props}>
+            <i className={cx('add-icon')} {...props}>
               <IoAdd />
             </i>
           ) : (
             <div className={classes}>
               {wishlists ? (
                 <div>
-                  <h3 className={cx("wishlist-title")}>{children}</h3>
-                  <span className={cx("wishlist-desc")}>{desc}</span>
+                  <h3 className={cx('wishlist-title')}>{children}</h3>
+                  <span className={cx('wishlist-desc')}>{desc}</span>
                 </div>
               ) : (
-                <div className={cx("background")}>
-                  <h3 className={cx("card-title")}>{name}</h3>
-                  <span className={cx("card-desc")}>{address}</span>
-                  {/* <div>{starLevel}</div> */}
+                <div className={cx('background')}>
+                  <h3 className={cx('card-title')}>{name}</h3>
+                  <span className={cx('card-desc')}>{address}</span>
+                  {!guide && (
+                    <div className="flex items-center gap-1 mb-2">
+                      <span>{starLevel}</span>
+                      <StarIcons customclass="text-[#F1C93B] "></StarIcons>
+                    </div>
+                  )}
                   {featured && !guide && (
-                    <div className={cx("feature-icons")}>
-                      <div className={cx("icon")}>
+                    <div className={cx('feature-icons')}>
+                      <div className={cx('icon')}>
                         <BiBed />
                         <span>1</span>
                       </div>
-                      <div className={cx("icon")}>
+                      <div className={cx('icon')}>
                         <BiBath />
                         <span>1</span>
                       </div>
-                      <div className={cx("icon")}>
+                      <div className={cx('icon')}>
                         <AiOutlineCar />
                         <span>1</span>
                       </div>
-                      <div className={cx("icon")}>
+                      <div className={cx('icon')}>
                         <MdPets />
                         <span>1</span>
                       </div>
@@ -162,21 +169,21 @@ function Card({
         </div>
       </Link>
       {host && (
-        <div className={cx("host-button")}>
+        <div className={cx('host-button')}>
           <Button
             small
             rounded
             onClick={() => {
               toUpdateHotel();
             }}
-            className={cx("modify")}
+            className={cx('modify')}
           >
             Modify
           </Button>
           <Button
             small
             rounded
-            className={cx("remove")}
+            className={cx('remove')}
             onClick={() => {
               deleteHotel(id);
             }}

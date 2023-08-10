@@ -1,19 +1,19 @@
-import styles from "./HostPage.module.css";
-import React from "react";
-import LayoutPrimary from "layouts/LayoutPrimary";
-import classNames from "classnames/bind";
-import CardList from "../../../components/CardList/CardList";
-import Card from "../../../components/Card/Card";
-import Button from "../../../components/Button/Button";
+import styles from './HostPage.module.css';
+import React from 'react';
+import LayoutPrimary from 'layouts/LayoutPrimary';
+import classNames from 'classnames/bind';
+import CardList from '../../../components/CardList/CardList';
+import Card from '../../../components/Card/Card';
+import Button from '../../../components/Button/Button';
 
 const cx = classNames.bind(styles);
 function HostPage() {
   return (
     <LayoutPrimary host>
-      <div className={cx("banner")}>
-        <div className={cx("banner-wrapper")}>
-          <h2 className={cx("banner-heading")}>Try Hosting With Us</h2>
-          <p className={cx("banner-desc")}>
+      <div className={cx('banner')}>
+        <div className={cx('banner-wrapper')}>
+          <h2 className={cx('banner-heading')}>Try Hosting With Us</h2>
+          <p className={cx('banner-desc')}>
             Welcome to our Host homepage, the ultimate platform for hotel
             management, room administration, and booking information.
             Efficiently manage your hotels, rooms, and reservations with
@@ -25,28 +25,28 @@ function HostPage() {
           to="/HostProperties"
           rounded
           mediumx
-          className={cx("banner-button")}
+          className={cx('banner-button')}
         >
           Lets Get Started
         </Button>
       </div>
-      <div className={cx("body")}>
-        <div className={cx("mid-section-container")}>
-          <div className={cx("mid-section-card-wrapper")}>
+      <div className={cx('body')}>
+        <div className={cx('mid-section-container')}>
+          <div className={cx('mid-section-card-wrapper')}>
             <Card
-              className={cx("custom-card")}
-              fragment={cx("second")}
+              className={cx('custom-card')}
+              fragment={cx('second')}
               guide
               featured
               thumbnail="https://contenthub-static.grammarly.com/blog/wp-content/uploads/2021/10/welcome-message-new-employee.jpeg"
             />
           </div>
-          <div className={cx("mid-section-information-wrapper")}>
-            <div className={cx("mid-section-information")}>
-              <h2 className={cx("mid-section-header")}>
+          <div className={cx('mid-section-information-wrapper')}>
+            <div className={cx('mid-section-information')}>
+              <h2 className={cx('mid-section-header')}>
                 WELCOME HOST HOMEPAGE
               </h2>
-              <p className={cx("mid-section-desc")}>
+              <p className={cx('mid-section-desc')}>
                 Welcome to our Host homepage, the ultimate platform for hotel
                 management, room administration, and booking information.
                 <br />
@@ -66,11 +66,6 @@ function HostPage() {
             </div>
           </div>
         </div>
-        <CardList grid desc="Hosting Tips & Guides">
-          <Card guide featured />
-          <Card guide featured />
-          <Card guide featured />
-        </CardList>
       </div>
     </LayoutPrimary>
   );

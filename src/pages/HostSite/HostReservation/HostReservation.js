@@ -21,6 +21,10 @@ import ConfirmModal from "module/modal/confirmModal";
 const cx = classNames.bind(styles);
 
 function ReservationStatus() {
+  const user = (() => {
+    const storageRoomsData = JSON.parse(localStorage.getItem("userData"));
+    return storageRoomsData ?? [];
+  })();
   const [tab, setTab] = useState("approved");
   const [query, setQuery] = useState("");
   const completedHistory = useSelector(getCompletedHistoryHost);
@@ -90,8 +94,8 @@ function ReservationStatus() {
   const tabActive = cx("tab-active");
 
   useEffect(() => {
-    dispatch(fetchHostHistoryBooking());
-  }, [dispatch]);
+    dispatch(fetchHostHistoryBooking({ userId: user.id }));
+  }, [dispatch, user.id]);
 
   return (
     <LayoutPrimary host>

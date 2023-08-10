@@ -1,5 +1,5 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import axios from 'axios';
 
 const initialState = {
   data: [],
@@ -11,11 +11,11 @@ const initialState = {
     cancelled: [],
     approved: [],
   },
-  status: "idle",
+  status: 'idle',
 };
 
 export const fetchHistoryBooking = createAsyncThunk(
-  "historyBooking,fetchHistoryBooking",
+  'historyBooking,fetchHistoryBooking',
   async ({ userId }) => {
     const res = await axios.get(
       `${process.env.REACT_APP_HTTSPURL}:${process.env.REACT_APP_BOOKING}/customer_bookings?limit=100&page=1&customer_id=${userId}`
@@ -25,7 +25,7 @@ export const fetchHistoryBooking = createAsyncThunk(
 );
 
 export const deleteHistoryBooking = createAsyncThunk(
-  "historyBooking,deleteHistoryBooking",
+  'historyBooking,deleteHistoryBooking',
   async ({ itemId }) => {
     await axios.post(
       `${process.env.REACT_APP_HTTSPURL}:${process.env.REACT_APP_BOOKING}/cancel_booking/${itemId}`
@@ -36,7 +36,7 @@ export const deleteHistoryBooking = createAsyncThunk(
 );
 
 export const completeHistoryBooking = createAsyncThunk(
-  "historyBooking,completeHistoryBooking",
+  'historyBooking,completeHistoryBooking',
   async ({ itemId }) => {
     await axios.post(
       `${process.env.REACT_APP_HTTSPURL}:${process.env.REACT_APP_BOOKING}/change_completed_booking/${itemId}`
@@ -47,17 +47,17 @@ export const completeHistoryBooking = createAsyncThunk(
 );
 
 export const fetchHostHistoryBooking = createAsyncThunk(
-  "historyBooking,fetchHostHistoryBooking",
-  async () => {
+  'historyBooking,fetchHostHistoryBooking',
+  async ({ userId }) => {
     const res = await axios.get(
-      `${process.env.REACT_APP_HTTSPURL}:${process.env.REACT_APP_BOOKING}/host_bookings?limit=10&page=1&host_id=2`
+      `${process.env.REACT_APP_HTTSPURL}:${process.env.REACT_APP_BOOKING}/host_bookings?limit=100&page=1&host_id=${userId}`
     );
     return res.data.items.reverse();
   }
 );
 
 export const historyBookingSlice = createSlice({
-  name: "historyBooking",
+  name: 'historyBooking',
   initialState,
   reducers: {
     addSearchData: (state, action) => {
@@ -79,24 +79,25 @@ export const historyBookingSlice = createSlice({
   extraReducers(builder) {
     builder
       .addCase(fetchHistoryBooking.pending, (state, action) => {
-        state.status = "loading";
+        state.status = 'loading';
       })
       .addCase(fetchHistoryBooking.fulfilled, (state, action) => {
-        state.status = "succeeded";
+        state.status = 'succeeded';
         if (action.payload) {
           const approvedData = action.payload.filter(
-            (item) => item.status === "approved"
+            (item) => item.status === 'approved'
           );
           const pastData = action.payload.filter(
-            (item) => item.status !== "approved" && item.status !== "pending"
+            (item) => item.status !== 'approved' && item.status !== 'pending'
           );
+
           state.data = action.payload;
           state.searchData = approvedData;
           state.pastData = pastData;
         }
       })
       .addCase(fetchHistoryBooking.rejected, (state, action) => {
-        state.status = "failed";
+        state.status = 'failed';
         state.error = action.error.message;
       })
       .addCase(deleteHistoryBooking.fulfilled, (state, action) => {
@@ -107,7 +108,7 @@ export const historyBookingSlice = createSlice({
           (item) => item.id !== action.payload
         );
 
-        alert("Delete Succesfully");
+        alert('Delete Succesfully');
         state.searchData = newData;
         state.hostSearchData.approved = newPastHostdata;
       })
@@ -118,7 +119,7 @@ export const historyBookingSlice = createSlice({
         const newPastHostdata = state.hostSearchData.approved.filter(
           (item) => item.id !== action.payload
         );
-        alert("Completed Succesfully");
+        alert('Completed Succesfully');
         state.searchData = newData;
         state.hostSearchData.approved = newPastHostdata;
       })
@@ -126,13 +127,13 @@ export const historyBookingSlice = createSlice({
       .addCase(fetchHostHistoryBooking.fulfilled, (state, action) => {
         if (action.payload) {
           const completedData = action.payload.filter(
-            (item) => item.status === "approved"
+            (item) => item.status === 'approved'
           );
           const cancelledData = action.payload.filter(
-            (item) => item.status !== "approved" && item.status !== "pending"
+            (item) => item.status !== 'approved' && item.status !== 'pending'
           );
           const rejectedData = action.payload.filter(
-            (item) => item.status === "cancelled"
+            (item) => item.status === 'cancelled'
           );
           state.hostData = action.payload;
           state.hostSearchData.approved = completedData;
@@ -158,13 +159,19 @@ export const getAllHistory = (state) => state.historyBooking.data;
 
 export const getApprovedHistory = (state) => {
   return state.historyBooking.data.filter(
-    (hotel) => hotel.status === "approved"
+    (hotel) => hotel.status === 'approved'
   );
 };
 
 export const getCompletedHistory = (state) => {
   return state.historyBooking.data.filter(
-    (hotel) => hotel.status === "completed"
+    (hotel) => hotel.status === 'completed'
+  );
+};
+
+export const getCustomerPast = (state) => {
+  return state.historyBooking.data.filter(
+    (hotel) => hotel.status === 'cancelled'
   );
 };
 
@@ -180,17 +187,17 @@ export const getHostRejected = (state) =>
 
 export const getCancelledHistoryHost = (state) => {
   return state.historyBooking.hostData.filter(
-    (hotel) => hotel.status !== "approved"
+    (hotel) => hotel.status !== 'approved'
   );
 };
 
 export const getRejectedHistoryHost = (state) => {
   return state.historyBooking.hostData.filter(
-    (hotel) => hotel.status === "cancelled"
+    (hotel) => hotel.status === 'cancelled'
   );
 };
 export const getCompletedHistoryHost = (state) => {
   return state.historyBooking.hostData.filter(
-    (hotel) => hotel.status === "approved"
+    (hotel) => hotel.status === 'approved'
   );
 };

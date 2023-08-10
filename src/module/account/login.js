@@ -1,33 +1,34 @@
-import { yupResolver } from "@hookform/resolvers/yup";
-import React from "react";
-import { useForm } from "react-hook-form";
+import { yupResolver } from '@hookform/resolvers/yup';
+import React from 'react';
+import { useForm } from 'react-hook-form';
 
-import jwtDecode from "jwt-decode";
-import * as yup from "yup";
-import ReactHookFormInput from "../../components/form/reactHookFormInput";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEnvelope, faLock, faEye } from "@fortawesome/free-solid-svg-icons";
+import jwtDecode from 'jwt-decode';
+import * as yup from 'yup';
+import ReactHookFormInput from '../../components/form/reactHookFormInput';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEnvelope, faLock, faEye } from '@fortawesome/free-solid-svg-icons';
 
-import FormBody from "../../module/form/formbody";
-import axios from "axios";
+import FormBody from '../../module/form/formbody';
+import axios from 'axios';
 
-import { useNavigate } from "react-router";
-import { useDispatch } from "react-redux";
-import { login } from "../../features/userSlice";
+import { useNavigate } from 'react-router';
+import { useDispatch } from 'react-redux';
+import { login } from '../../features/userSlice';
 
-const schema = yup
+const schema = yup //lib support validte Form
   .object()
   .shape({
     username: yup
       .string()
-      .email("Please Enter a Valid Email")
-      .required("Please Enter Your username"),
-    password: yup.string().required("Password is required"),
+      .email('Please Enter a Valid Email')
+      .required('Please Enter Your username'),
+    password: yup.string().required('Password is required'),
     // .min(8, "Password must have at least 8 characters"),
   })
   .required();
 
 const Login = ({ host }) => {
+  // Structure cua reactHookForm
   const {
     register,
     handleSubmit,
@@ -50,9 +51,9 @@ const Login = ({ host }) => {
       const decoded = jwtDecode(res.data.jwt_token);
       return decoded;
     } catch (error) {
-      setError("password", {
-        type: "manual",
-        message: "Incorrect password",
+      setError('password', {
+        type: 'manual',
+        message: 'Incorrect password',
       });
     }
   };
@@ -61,13 +62,13 @@ const Login = ({ host }) => {
       `${process.env.REACT_APP_HTTSPURL}/customer/${data.customer_id}`
     );
     dispatch(login);
-    localStorage.setItem("userData", JSON.stringify(userData.data));
+    localStorage.setItem('userData', JSON.stringify(userData.data));
     navigate(0);
 
     if (data.user && host) {
-      window.location.href = "/HostPage";
+      window.location.href = '/HostPage';
     } else if (data.user) {
-      window.location.href = "/";
+      window.location.href = '/';
     }
   };
 
@@ -81,8 +82,8 @@ const Login = ({ host }) => {
           setTimeout(() => {
             resolve();
             reset({
-              username: "",
-              password: "",
+              username: '',
+              password: '',
             });
           }, 0);
         });

@@ -161,8 +161,12 @@ function Admin() {
             <div className={cx("noti_icon")}>
               <AiOutlineBell></AiOutlineBell>
             </div>
-            <div> LinhHuyenLe</div>
-            <img className={cx("user-avatar")} src={user} alt="no img" />
+            <div> {user.user.name}</div>
+            <img
+              className="w-10 h-10 rounded-full"
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxF9EkJbKO9E8COZZwzRobDFe0N8lCwDyFXWo-CkTsRQ&s"
+              alt="no img"
+            />
           </div>
         </nav>
         <div className={cx("table-container")}>

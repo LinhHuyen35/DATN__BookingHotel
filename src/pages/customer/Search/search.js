@@ -15,11 +15,12 @@ function Search({ handleLike }) {
   const [total, setTotal] = useState("");
   const [pageNumber, setPageNumber] = useState(1);
   const location = useLocation();
-  const { startDate, endDate, name } = location.state.item;
+  const { startDate, endDate, name, star_level } = location.state.item;
   console.log(location);
   async function fetchData(page) {
     const response = await axios.get(
-      `${process.env.REACT_APP_HTTSPURL}:${process.env.REACT_APP_HOTEL}/hotels?page=${page}&limit=4&location=${name}&check_in=${startDate}&check_out=${endDate}&name=${location.state.hotelName}`
+      `${process.env.REACT_APP_HTTSPURL}:${process.env.REACT_APP_HOTEL}/hotels?page=${page}&limit=4&location=${name}&check_in=${startDate}&check_out=${endDate}&name=${location.state.hotelName}&star_level=${star_level}
+   `
     );
     setTotal(response.data.total_count);
     if (data.length > 0) {

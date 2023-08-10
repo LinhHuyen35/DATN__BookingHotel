@@ -1,5 +1,5 @@
-import React from "react";
-import ImageUploading from "react-images-uploading";
+import React from 'react';
+import ImageUploading from 'react-images-uploading';
 
 function UploadImage() {
   const [images, setImages] = React.useState([]);
@@ -18,7 +18,7 @@ function UploadImage() {
         onChange={onChange}
         maxNumber={maxNumber}
         dataURLKey="data_url"
-        acceptType={["jpg"]}
+        acceptType={['jpg']}
       >
         {({
           imageList,
@@ -32,7 +32,7 @@ function UploadImage() {
           // write your building UI
           <div className="upload__image-wrapper">
             <button
-              style={isDragging ? { color: "red" } : null}
+              style={isDragging ? { color: 'red' } : null}
               onClick={onImageUpload}
               {...dragProps}
             >

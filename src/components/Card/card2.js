@@ -1,15 +1,15 @@
-import axios from "axios";
+import axios from 'axios';
 import {
   addToCompare,
   getAllCompareData,
   removeFromCompare,
-} from "features/compare/compareSlice";
-import StarIcons from "module/Icons/StarIcon";
-import React, { useEffect, useState } from "react";
-import { IconContext } from "react-icons";
-import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
-import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+} from 'features/compare/compareSlice';
+import StarIcons from 'module/Icons/StarIcon';
+import React, { useEffect, useState } from 'react';
+import { IconContext } from 'react-icons';
+import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 const Card2 = ({
   address,
@@ -64,7 +64,7 @@ const Card2 = ({
         }}
       >
         {itemExist ? (
-          <IconContext.Provider value={{ color: "red" }}>
+          <IconContext.Provider value={{ color: 'red' }}>
             <AiFillHeart />
           </IconContext.Provider>
         ) : (
@@ -82,13 +82,13 @@ const Card2 = ({
         <div className="flex justify-between">
           <div className="flex items-center justify-center gap-1">
             <StarIcons customclass="text-[#F1C93B]"></StarIcons>
-            <span>{rate}</span>
+            <span>{star}</span>
           </div>
           <button
             onClick={handleCompare}
             className="px-4 py-2 font-bold text-white border border-blue-700 rounded bg-blue hover:bg-blue-700"
           >
-            {isInCompare ? "Added" : "Add to Compare"}
+            {isInCompare ? 'Added' : 'Add to Compare'}
           </button>
         </div>
       </div>

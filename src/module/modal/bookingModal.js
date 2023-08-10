@@ -8,9 +8,21 @@ const BookingModalHeader = ({ closeModal, img, item }) => {
         <span className="absolute left-[34%] h-full bg-black w-[1px] opacity-50"></span>
         <img src={img} alt="" className="w-[150px] h-full" />
         <div className="w-[300px] font-bold text-xl ">
-          <div>Name:{item.hotel.name}</div>
-          <div>Booking id: {item.id}</div>
-          <div>Total Price: {item.total_price}$</div>
+          <div>Name:{item?.hotel?.name}</div>
+          <div>Booking id: {item?.id}</div>
+          <div>Total Price: {item?.total_price}$</div>
+          <div>
+            Status:{" "}
+            <span
+              className={`${
+                item.status === "approved" || item.status === "completed"
+                  ? "text-lightGreen"
+                  : "text-[#a8a196]"
+              } `}
+            >
+              {item?.status}
+            </span>
+          </div>
         </div>
       </div>
       <i onClick={closeModal}>
@@ -40,7 +52,7 @@ const BookedRoom = ({ bookedroom }) => {
           </tr>
         </thead>
         <tbody>
-          {bookedroom.map((item) => (
+          {bookedroom?.map((item) => (
             <tr>
               <td>{item.room.type}</td>
               <td>{item.room.name}</td>
@@ -59,9 +71,9 @@ const BookedRoom = ({ bookedroom }) => {
 };
 
 const BookingModal = ({ closeModal, item }) => {
-  const roomQuantity = item.bookedroom.map((item) => item.quantity);
-  const totalQuantity = roomQuantity.reduce((acc, curr) => acc + curr, 0);
-
+  const roomQuantity = item?.bookedroom?.map((item) => item.quantity);
+  const totalQuantity = roomQuantity?.reduce((acc, curr) => acc + curr, 0);
+  console.log(item);
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="fixed inset-0 bg-black opacity-50"></div>
@@ -70,7 +82,7 @@ const BookingModal = ({ closeModal, item }) => {
           <BookingModalHeader
             closeModal={closeModal}
             item={item}
-            img={item.hotel.list_image[0].url}
+            img={item?.hotel?.list_image[0]?.url}
           />
           <BookedRoom bookedroom={item.bookedroom} />
         </div>

@@ -1,7 +1,8 @@
-import { getAllCompareData } from "features/compare/compareSlice";
-import LayoutPrimary from "layouts/LayoutPrimary";
-import React from "react";
-import { useSelector } from "react-redux";
+import { getAllCompareData } from 'features/compare/compareSlice';
+import LayoutPrimary from 'layouts/LayoutPrimary';
+import React from 'react';
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 const Compare = () => {
   const compareData = useSelector(getAllCompareData);
@@ -15,7 +16,9 @@ const Compare = () => {
             <tr>
               <th>Titlle</th>
               {compareData.map((item) => (
-                <th key={item.id}>{item.name}</th>
+                <Link to={`/Details/:${item.id}`}>
+                  <th key={item.id}>{item.name}</th>
+                </Link>
               ))}
             </tr>
           </thead>
@@ -41,7 +44,7 @@ const Compare = () => {
             <tr>
               <td>Room Vip</td>
               {compareData.map((item) => {
-                const vipRoom = item.rooms.find((room) => room.type === "VIP");
+                const vipRoom = item.rooms.find((room) => room.type === 'VIP');
                 return vipRoom ? <td key={item.id}>{vipRoom.price}</td> : null;
               })}
             </tr>
@@ -49,7 +52,7 @@ const Compare = () => {
               <td>Room Single</td>
               {compareData.map((item) => {
                 const singleRoom = item.rooms.find(
-                  (room) => room.type === "Single"
+                  (room) => room.type === 'Single'
                 );
                 return singleRoom ? (
                   <td key={item.id}>{singleRoom.price}</td>
@@ -60,7 +63,7 @@ const Compare = () => {
               <td>Room Double</td>
               {compareData.map((item) => {
                 const doubleRoom = item.rooms.find(
-                  (room) => room.type === "Double"
+                  (room) => room.type === 'Double'
                 );
                 return doubleRoom ? (
                   <td key={item.id}>{doubleRoom.price}</td>
