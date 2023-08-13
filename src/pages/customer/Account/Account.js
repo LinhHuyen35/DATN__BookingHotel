@@ -26,8 +26,6 @@ function Account() {
   const handleEdit = () => {
     setEditProfile(!editProfile);
   };
-<<<<<<< HEAD
-=======
 
   const [uploadedImageUrl, setUploadedImageUrl] = useState('');
   const profileUpload = async (file) => {
@@ -79,7 +77,6 @@ function Account() {
     }
   };
 
->>>>>>> 3938353b5545933c07482d9608d0fc2297815dd1
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_HTTSPURL}/customer/${account.id}`)
@@ -95,10 +92,6 @@ function Account() {
       <NavBar />
       <div className={cx('account-container')}>
         <div className={cx('col-left')}>
-<<<<<<< HEAD
-          <img className={cx('account-avatar')} src={avatar} alt="hieu" />
-          <p className={cx('upload')}>Upload a Photo</p>
-=======
           <img
             className={cx('account-avatar')}
             src={
@@ -123,7 +116,6 @@ function Account() {
               onChange={handleImageUpload}
             />
           </label>
->>>>>>> 3938353b5545933c07482d9608d0fc2297815dd1
           {/* <input type="file" /> */}
           <div className={cx('account-verification__container')}>
             <div className={cx('account-verification')}>
@@ -190,32 +182,6 @@ function Account() {
               }}
               validateOnMount
               onSubmit={(values, { resetForm, setSubmitting }) => {
-<<<<<<< HEAD
-                // console.log(values);
-                setTimeout(() => {
-                  //   // setSignUpAccount(() => {
-                  //   //   const newData = [...signUpAccount, values];
-                  //   //   const jsonData = JSON.stringify(newData);
-                  //   //   localStorage.setItem("signUpAccount", jsonData);
-                  //   // });
-                  axios
-                    .put(
-                      `${process.env.REACT_APP_HTTSPURL}/customer/${account.id}`,
-                      JSON.stringify(values)
-                    )
-                    .then(function (response) {
-                      console.log(response);
-                      console.log('succes');
-                    })
-                    .catch(function (error) {
-                      console.log(error);
-                    });
-                  // console.log(JSON.stringify(values));
-                  // navigate(host ? "/LoginHost" : "/login1");
-                  console.log(values);
-                  setSubmitting(false);
-                }, 1000);
-=======
                 putData({
                   ...values,
                   user: { ...values.user, avatar: uploadedImageUrl },
@@ -238,7 +204,6 @@ function Account() {
                 //   });
                 setEditProfile(false);
                 alert('update succesfully');
->>>>>>> 3938353b5545933c07482d9608d0fc2297815dd1
               }}
             >
               {(formik) => (
