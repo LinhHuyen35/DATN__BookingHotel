@@ -47,7 +47,6 @@ function AddProperties() {
       console.log(error.config);
     }
   };
-
   return (
     <LayoutPrimary host>
       <ScrollToTop />
@@ -55,12 +54,11 @@ function AddProperties() {
       <Formik
         initialValues={{
           name: '',
-          star_level: '4',
+          star_level: '',
           rule: '',
           description: '',
           address: {
             detail_address: '',
-            district: '',
             province: '',
           },
           list_image: [],
@@ -73,7 +71,11 @@ function AddProperties() {
           name: Yup.string().required('Name is required'),
         })}
         onSubmit={(values, { resetForm, setSubmitting }) => {
-          const dataToAdd = { ...values, list_image: imageUrl };
+          const dataToAdd = {
+            ...values,
+            list_image: Object.values(imageUrl[0]),
+          };
+          // console.log(dataToAdd);
           handleAddHotel(dataToAdd);
         }}
       >

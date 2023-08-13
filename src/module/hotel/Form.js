@@ -6,16 +6,17 @@ import SelectFormik from 'components/SelectFormik/SelectFormik';
 import TextAreaFormik from 'components/TextAreaFormik/TextAreaFormik';
 import city from '../../json/province.json';
 import Button from 'components/Button/Button';
-// import ImageGallery from 'components/imageGallery';  // <ImageGallery setImageUrl={setImageUrl} imageUrl={imageUrl} />
+import ImageGallery from 'components/imageGallery'; // <ImageGallery setImageUrl={setImageUrl} imageUrl={imageUrl} />
 import { Cloudinary } from '@cloudinary/url-gen';
 import axios from 'axios';
+import { object } from 'yup';
 
 const cld = new Cloudinary({ cloud: { cloudName: 'dfc9jwf19' } });
 
 const cx = classNames.bind(styles);
 const province = city.data;
-const Form = ({ setShowConfirmation, setImageUrl, imageUrl, update }) => {
-  const [uploadedImageUrl, setUploadedImageUrl] = useState('');
+const Form = ({ setShowConfirmation, setImageUrl, imageUrl, update, data }) => {
+  const [uploadedImageUrl, setUploadedImageUrl] = useState({});
   const profileUpload = async (file) => {
     console.log('file123', file);
     const formData = new FormData();
@@ -29,33 +30,34 @@ const Form = ({ setShowConfirmation, setImageUrl, imageUrl, update }) => {
       formData
     );
     console.log('resurtUrl', resurtUrl.data.url);
-    return resurtUrl;
+    return resurtUrl.data.url;
   };
 
-  const handleImageUpload = async (e) => {
+  const handleImageUpload = async (e, imageNumber) => {
+    console.log(imageNumber);
     const file = e.target.files[0];
     console.log('file', file);
     if (file) {
-      const imageUrl = await profileUpload(file);
-      console.log('imageUrl', imageUrl);
-      setUploadedImageUrl(imageUrl);
+      const resUrl = await profileUpload(file);
+      setUploadedImageUrl({
+        ...uploadedImageUrl,
+        [imageNumber]: { url: resUrl, type: 'hotel' },
+      });
+      const newUrl = [
+        {
+          ...uploadedImageUrl,
+          [imageNumber]: { url: resUrl, type: 'hotel' },
+        },
+      ];
+      setImageUrl(newUrl);
+      console.log('imageUrl', resUrl);
+      console.log(uploadedImageUrl);
     }
   };
 
   return (
     <div className={cx('add3-properties')}>
       <div>
-        <div className={cx('input-container')}>
-          <label htmlFor="imageUpload" className="text-lg font-semibold">
-            Upload Image
-          </label>
-          <input
-            type="file"
-            id="imageUpload"
-            accept="image/*"
-            onChange={handleImageUpload}
-          />
-        </div>
         <div className={cx('content3-container')}>
           <div className={cx('input-container')}>
             <h1
@@ -78,6 +80,24 @@ const Form = ({ setShowConfirmation, setImageUrl, imageUrl, update }) => {
             ></MyInput>
           </div>
           <div className={cx('input-container')}>
+            {update ? (
+              <ImageGallery
+                updateDefautlImage={data.list_image}
+                uploadedImageUrl={uploadedImageUrl}
+                setImageUrl={setImageUrl}
+                imageUrl={imageUrl}
+                handleImageUpload={handleImageUpload}
+              />
+            ) : (
+              <ImageGallery
+                uploadedImageUrl={uploadedImageUrl}
+                setImageUrl={setImageUrl}
+                imageUrl={imageUrl}
+                handleImageUpload={handleImageUpload}
+              />
+            )}
+          </div>
+          <div className={cx('input-container')}>
             <h3 className="text-3xl font-bold">Add Your location.</h3>
 
             <div className={cx('location-input__wrapper')}>
@@ -88,11 +108,6 @@ const Form = ({ setShowConfirmation, setImageUrl, imageUrl, update }) => {
                       {i.name}
                     </option>
                   ))}
-                </SelectFormik>
-                <SelectFormik name="address.district" label="District">
-                  <option value="CauGiay">Cau Giay</option>
-                  <option value="BaDinh">Ba Dinh </option>
-                  <option value="HoangMai">Hoang Mai</option>
                 </SelectFormik>
               </div>
               <div>
@@ -141,7 +156,6 @@ const Form = ({ setShowConfirmation, setImageUrl, imageUrl, update }) => {
             rounded
             type="button"
             onClick={() => {
-              setImageUrl(uploadedImageUrl);
               setShowConfirmation(true);
             }}
           >

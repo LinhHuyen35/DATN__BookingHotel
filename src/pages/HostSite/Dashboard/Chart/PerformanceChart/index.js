@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   AreaChart,
   Card,
@@ -10,6 +10,7 @@ import {
   ToggleItem,
 } from '@tremor/react';
 import { InformationCircleIcon } from '@heroicons/react/outline';
+import axios from 'axios';
 
 export const performance = [
   {
@@ -31,6 +32,24 @@ export const performance = [
     Profit: 682,
     Customers: 682,
   },
+  {
+    date: '2021-03-13',
+    Sales: 882,
+    Profit: 682,
+    Customers: 682,
+  },
+  {
+    date: '2021-03-13',
+    Sales: 882,
+    Profit: 682,
+    Customers: 682,
+  },
+  {
+    date: '2021-03-13',
+    Sales: 882,
+    Profit: 682,
+    Customers: 682,
+  },
 ];
 
 // Basic formatters for the chart values
@@ -41,14 +60,24 @@ const numberFormatter = (value) =>
   `${Intl.NumberFormat('us').format(value).toString()}`;
 
 export default function PerformanceChart() {
-  const [selectedKpi, setSelectedKpi] = useState('Sales');
-
+  const [selectedKpi, setSelectedKpi] = useState('Cancelled');
+  const [data, setData] = useState([]);
   // map formatters by selectedKpi
   const formatters = {
     Profit: dollarFormatter,
     Cancelled: dollarFormatter,
     Customers: numberFormatter,
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await axios.get(
+        `https://103.184.113.181:447/performance?hotel_id=130`
+      );
+      setData(res.data);
+    };
+    fetchData();
+  }, []);
 
   return (
     <Card>
@@ -74,14 +103,14 @@ export default function PerformanceChart() {
             defaultValue={selectedKpi}
             onValueChange={(value) => setSelectedKpi(value)}
           >
-            <ToggleItem value="Sales" text="Sales" />
-            <ToggleItem value="Profit" text="Profit" />
+            <ToggleItem value="Booking" text="Booking" />
+            <ToggleItem value="Cancelled" text="Cancelled" />
             <ToggleItem value="Customers" text="Customers" />
           </Toggle>
         </div>
       </div>
       <AreaChart
-        data={performance}
+        data={data}
         index="date"
         categories={[selectedKpi]}
         colors={['blue']}

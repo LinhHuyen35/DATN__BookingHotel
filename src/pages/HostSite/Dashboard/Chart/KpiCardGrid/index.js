@@ -1,32 +1,34 @@
-import { useEffect, useState } from "react";
-import { Card, Grid, Tab, TabList, Text, Title } from "@tremor/react";
-import KpiCard from "../KpiCard";
-import PerformanceChart from "../PerformanceChart";
-import Admin from "../../../../Admin/Admin";
-import { RoundChart } from "../RoundChart";
-import styles from "../../../../Admin/Admin.module.css";
-import classNames from "classnames/bind";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from 'react';
+import { Card, Grid, Tab, TabList, Text, Title } from '@tremor/react';
+import KpiCard from '../KpiCard';
+import PerformanceChart from '../PerformanceChart';
+import Admin from '../../../../Admin/Admin';
+import { RoundChart } from '../RoundChart';
+import styles from '../../../../Admin/Admin.module.css';
+import classNames from 'classnames/bind';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   fetchHostComments,
   fetchHostHotel,
   getAllHotel,
-} from "features/hostHotelSlice";
+} from 'features/hostHotelSlice';
 
 const cx = classNames.bind(styles);
 export default function KpiCardGrid() {
   const [isActive, setIsActive] = useState(0);
+  const [idOfHotel, setIdOfHotel] = useState();
   const dispatch = useDispatch();
 
   const user = (() => {
-    const storageRoomsData = JSON.parse(localStorage.getItem("userData"));
+    const storageRoomsData = JSON.parse(localStorage.getItem('userData'));
     return storageRoomsData ?? [];
   })();
-  const [selectedView, setSelectedView] = useState("1");
+  const [selectedView, setSelectedView] = useState('1');
   const hotelData = useSelector(getAllHotel);
 
   const handleClick = (item, index) => {
     setIsActive(index);
+    setIdOfHotel(item.id);
     dispatch(fetchHostComments({ hotelId: item.id }));
   };
 
@@ -40,7 +42,8 @@ export default function KpiCardGrid() {
     <main className="p-2 ml-0 bg-slate-50 sm:p-10">
       <Title className="text-4xl font-bold">Dashboard</Title>
       <Text className="text-l">
-        Lorem ipsum dolor sit amet, consetetur sadipscing elitr.
+        Monitor your data in real-time with our intuitive dashboard, providing
+        insightful visualizations for informed decision-making.
       </Text>
 
       <TabList
@@ -52,18 +55,18 @@ export default function KpiCardGrid() {
         <Tab value="2" text="Detail" />
       </TabList>
 
-      {selectedView === "1" ? (
+      {selectedView === '1' ? (
         <div className="flex gap-4">
-          <aside className={cx("second-aside")}>
-            <h2 className={cx("h2")}>Hotel Name</h2>
-            <div className="overflow-auto h-[594px] cursor-pointer">
+          <aside className={cx('second-aside')}>
+            <h2 className={cx('h2')}>Hotel Name</h2>
+            <div className="h-full overflow-auto cursor-pointer">
               {hotelData.map((item, index) => (
                 <div
                   key={item.id}
                   className={
                     isActive !== index
-                      ? cx("tab_bar")
-                      : "bg-[#2e3c8f] py-[25px] px-[16px]"
+                      ? cx('tab_bar')
+                      : 'bg-[#2e3c8f] py-[25px] px-[16px]'
                   }
                   onClick={() => {
                     handleClick(item, index);
@@ -77,14 +80,14 @@ export default function KpiCardGrid() {
           </aside>
           <div className="flex flex-col w-full">
             <Grid>
-              <KpiCard />
+              <KpiCard hotelId={idOfHotel} />
             </Grid>
             <Grid className="gap-6">
               <div className="mt-6 ">
                 <PerformanceChart />
               </div>
               <div className="mt-6">
-                <RoundChart />
+                <RoundChart hotelId={idOfHotel} />
               </div>
             </Grid>
           </div>

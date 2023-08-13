@@ -2,8 +2,8 @@ import MyInput from 'components/MyInput/MyInput';
 import React, { useState } from 'react';
 import styles from '../modal/Modal.module.css';
 
-import classNames from 'classnames/bind';
 import { CloseIcon } from '@chakra-ui/icons';
+import classNames from 'classnames/bind';
 const cx = classNames.bind(styles);
 
 const AddPhotoModal = ({ setIsVisible, imageUrl, setImageUrl }) => {

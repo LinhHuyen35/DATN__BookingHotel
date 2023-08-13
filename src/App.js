@@ -1,41 +1,41 @@
-import React, { useState, useEffect } from "react";
-import { Routes, Route } from "react-router-dom";
-import "./App.css";
-import { PayPalScriptProvider } from "@paypal/react-paypal-js";
-import Home from "./pages/customer/home/home";
-import Checkout from "./pages/customer/checkout";
-import Details from "./pages/customer/Details/Details";
-import HomeBooking from "./pages/customer/Home-Booking/Home-Booking";
-import Search from "./pages/customer/Search/search";
-import SignUpCus from "./pages/customer/SignUp/SignUp";
-import ButtonTest from "./pages/ButtonTest/ButtonTest";
-import Account from "./pages/customer/Account/Account";
-import Wishlists from "./pages/customer/Wishlists/Wishlists";
-import ReservationForm from "./pages/customer/Reservation-form/Reservation";
-import ReservationStatus from "./pages/customer/ReservationStatus/ReservationStatus";
-import HostPage from "./pages/HostSite/HostPage/HostPage";
-import SignUpHost from "./pages/HostSite/SignUpHost/SignUpHost";
-import HostProperties from "./pages/HostSite/HostProperties/HostProperties";
-import Admin from "./pages/Admin/Admin";
-import AddProperties from "./pages/HostSite/AddProperties/AddProperties";
-import AddRooms1 from "./pages/HostSite/AddRooms1/AddRooms1";
-import HostReservation from "../src/pages/HostSite/HostReservation/HostReservation";
-import TransactionHistory from "./pages/HostSite/TransactionHistory/TransactionHistory";
-import ScrollToTop from "./components/ScrollToTop";
-import "@fontsource/mulish"; // Import font
-import LoginHost from "./pages/HostSite/LoginHost/LoginHost";
-import axios from "axios";
-import Login from "pages/customer/Login/Login";
-import UpdateHotel from "pages/HostSite/UpdateHotel/UpdateHotel";
-import Dashboard from "pages/HostSite/Dashboard/Dashboard";
+import React, { useState, useEffect } from 'react';
+import { Routes, Route } from 'react-router-dom';
+import './App.css';
+import { PayPalScriptProvider } from '@paypal/react-paypal-js';
+import Home from './pages/customer/home/home';
+import Checkout from './pages/customer/checkout';
+import Details from './pages/customer/Details/Details';
+import HomeBooking from './pages/customer/Home-Booking/Home-Booking';
+import Search from './pages/customer/Search/search';
+import SignUpCus from './pages/customer/SignUp/SignUp';
+import ButtonTest from './pages/ButtonTest/ButtonTest';
+import Account from './pages/customer/Account/Account';
+import Wishlists from './pages/customer/Wishlists/Wishlists';
+import ReservationForm from './pages/customer/Reservation-form/Reservation';
+import ReservationStatus from './pages/customer/ReservationStatus/ReservationStatus';
+import HostPage from './pages/HostSite/HostPage/HostPage';
+import SignUpHost from './pages/HostSite/SignUpHost/SignUpHost';
+import HostProperties from './pages/HostSite/HostProperties/HostProperties';
+import Admin from './pages/Admin/Admin';
+import AddProperties from './pages/HostSite/AddProperties/AddProperties';
+import AddRooms1 from './pages/HostSite/AddRooms1/AddRooms1';
+import HostReservation from '../src/pages/HostSite/HostReservation/HostReservation';
+import TransactionHistory from './pages/HostSite/TransactionHistory/TransactionHistory';
+import ScrollToTop from './components/ScrollToTop';
+import '@fontsource/mulish'; // Import font
+import LoginHost from './pages/HostSite/LoginHost/LoginHost';
+import axios from 'axios';
+import Login from 'pages/customer/Login/Login';
+import UpdateHotel from 'pages/HostSite/UpdateHotel/UpdateHotel';
+import Dashboard from 'pages/HostSite/Dashboard/Dashboard';
 
-import {} from "stylis-plugin-rtl";
-import AddRoom from "pages/HostSite/AddRoom/AddRoom";
-import AddRoomForm from "pages/HostSite/AddRoom/AddRoomForm";
-import Compare from "pages/customer/Compare/compare";
+import {} from 'stylis-plugin-rtl';
+import AddRoom from 'pages/HostSite/AddRoom/AddRoom';
+import AddRoomForm from 'pages/HostSite/AddRoom/AddRoomForm';
+import Compare from 'pages/customer/Compare/compare';
 function App() {
   const currentAccount = (() => {
-    const storageRoomsData = JSON.parse(localStorage.getItem("userData"));
+    const storageRoomsData = JSON.parse(localStorage.getItem('userData'));
     return storageRoomsData ?? false;
   })();
 
@@ -127,7 +127,7 @@ function App() {
             )
             .then(function (response) {
               console.log(response);
-              console.log("succes");
+              console.log('succes');
             })
             .catch(function (error) {
               console.log(error);
@@ -148,7 +148,7 @@ function App() {
             )
             .then(function (response) {
               console.log(response);
-              console.log("succes");
+              console.log('succes');
             })
             .catch(function (error) {
               console.log(error);
@@ -157,14 +157,14 @@ function App() {
         });
       }
     } else {
-      alert("please login first");
+      alert('please login first');
     }
   };
 
   const clearAll = () => {
     setWishList(() => {
       const newData = [];
-      localStorage.removeItem("wishlist");
+      localStorage.removeItem('wishlist');
       return newData;
     });
   };
@@ -182,7 +182,7 @@ function App() {
         )
         .then(function (response) {
           console.log(response);
-          console.log("succes");
+          console.log('succes');
         })
         .catch(function (error) {
           console.log(error);
@@ -194,11 +194,11 @@ function App() {
   return (
     <PayPalScriptProvider
       options={{
-        "client-id":
-          "AX9EaV-372UA-NlE3diV0T5LSqztptRkCyxk5rz0J3x9WSrZc0BSINHOqcqOhdjAB3evTGHGz8XUKqAc",
+        'client-id':
+          'AX9EaV-372UA-NlE3diV0T5LSqztptRkCyxk5rz0J3x9WSrZc0BSINHOqcqOhdjAB3evTGHGz8XUKqAc',
       }}
     >
-      <div className="App">
+      <div className="overflow-hidden">
         <ScrollToTop />
         <Routes>
           <Route path="/" element={<Home />} />
@@ -221,7 +221,10 @@ function App() {
               />
             }
           />
-          <Route path="/Search" element={<Search handleLike={handleLike} />} />
+          <Route
+            path="/Search"
+            element={<Search handleLike={handleLike} wishlist={wishlist} />}
+          />
           <Route path="/SignUp" element={<SignUpCus />} />
           <Route path="/Login" element={<Login />} />
           <Route path="/ButtonTest" element={<ButtonTest />} />

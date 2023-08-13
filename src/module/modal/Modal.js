@@ -1,18 +1,17 @@
-import React, { useState } from "react";
-import classNames from "classnames/bind";
-import styles from "./Modal.module.css";
-import CloseIcon from "module/Icons/CloseIcon";
-import StarIcons from "module/Icons/StarIcon";
-import TextAreaFormik from "components/TextAreaFormik/TextAreaFormik";
-import Button from "components/Button/Button";
-import { Formik } from "formik";
+import React, { useState } from 'react';
+import classNames from 'classnames/bind';
+import styles from './Modal.module.css';
+import CloseIcon from 'module/Icons/CloseIcon';
+import StarIcons from 'module/Icons/StarIcon';
+import TextAreaFormik from 'components/TextAreaFormik/TextAreaFormik';
+import Button from 'components/Button/Button';
+import { Formik } from 'formik';
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
-import * as Yup from "yup";
-
-import axios from "axios";
-import ConfirmModal from "./confirmModal";
+import axios from 'axios';
+import ConfirmModal from './confirmModal';
+import * as Yup from 'yup';
 const cx = classNames.bind(styles);
 
 const Modal = ({ userId, hotel, handleModalVisible, userName }) => {
@@ -23,7 +22,7 @@ const Modal = ({ userId, hotel, handleModalVisible, userName }) => {
 
   const handleSetRating = (i, setFieldValue) => {
     setRating(i);
-    setFieldValue("rate", i);
+    setFieldValue('rate', i);
   };
 
   const handleFetchComment = async (values) => {
@@ -32,7 +31,7 @@ const Modal = ({ userId, hotel, handleModalVisible, userName }) => {
         `${process.env.REACT_APP_HTTSPURL}:${process.env.REACT_APP_HOTEL}/hotel/add_comment`,
         JSON.stringify(values)
       );
-      alert("Comment succesfully");
+      alert('Comment succesfully');
       navigate(`/Details/${hotel.id}`);
       console.log(res);
     } catch (error) {
@@ -43,7 +42,7 @@ const Modal = ({ userId, hotel, handleModalVisible, userName }) => {
       } else if (error.request) {
         console.log(error.request);
       } else {
-        console.log("Error", error.message);
+        console.log('Error', error.message);
       }
       console.log(error.config);
     }
@@ -52,8 +51,8 @@ const Modal = ({ userId, hotel, handleModalVisible, userName }) => {
   return (
     <Formik
       initialValues={{
-        text: "",
-        type: "txt",
+        text: '',
+        type: 'txt',
         rate: 3,
         hotel_id: hotel.id,
         customer_id: userId,
@@ -62,15 +61,18 @@ const Modal = ({ userId, hotel, handleModalVisible, userName }) => {
         field: true,
       }}
       validateOnMount
-      validationSchema={Yup.object({})}
+      validationSchema={Yup.object({
+        rate: Yup.number().required('Rate is required'),
+        text: Yup.string().required('Text is required'),
+      })}
       onSubmit={(values, { resetForm, setSubmitting }) => {
         console.log(values);
         handleFetchComment(values);
       }}
     >
       {(formik) => (
-        <form onSubmit={formik.handleSubmit} className={cx("sign-up__form")}>
-          <div className={cx("modal")}>
+        <form onSubmit={formik.handleSubmit} className={cx('sign-up__form')}>
+          <div className={cx('modal')}>
             {showConfirmation && (
               <ConfirmModal
                 hiddenFunction={formik.handleSubmit}
@@ -78,28 +80,28 @@ const Modal = ({ userId, hotel, handleModalVisible, userName }) => {
                 message="Are You Sure"
               />
             )}
-            <div className={cx("modal-content")}>
-              <div className={cx("top-wrapper")}>
+            <div className={cx('modal-content')}>
+              <div className={cx('top-wrapper')}>
                 <h2>Review</h2>
                 <CloseIcon
-                  customclass={cx("close-icon")}
+                  customclass={cx('close-icon')}
                   onClick={handleModalVisible}
                 ></CloseIcon>
               </div>
-              <div className={cx("hotel-information__container")}>
+              <div className={cx('hotel-information__container')}>
                 <img
-                  className={cx("img")}
+                  className={cx('img')}
                   src="https://media-cdn.tripadvisor.com/media/photo-s/1c/59/4c/d3/hanoi-la-siesta-hotel.jpg"
                   alt="no-img"
                 />
                 <div>
-                  <h3 className={cx("hotel-name")}>{hotel.name}</h3>
+                  <h3 className={cx('hotel-name')}>{hotel.name}</h3>
                   <p>
                     by <span className="font-bold">{userName}</span>
                   </p>
                 </div>
               </div>
-              <div className={cx("rating-wrapper")}>
+              <div className={cx('rating-wrapper')}>
                 <p>Give Overall Rating</p>
 
                 <div>
@@ -110,14 +112,14 @@ const Modal = ({ userId, hotel, handleModalVisible, userName }) => {
                         type="button"
                         key={i}
                         className={
-                          i <= (hover || rating) ? cx("on") : cx("off")
+                          i <= (hover || rating) ? cx('on') : cx('off')
                         }
                         onClick={() => handleSetRating(i, formik.setFieldValue)}
                         onMouseEnter={() => setHover(i)}
                         onMouseLeave={() => setHover(rating)}
                       >
                         <StarIcons
-                          customclass={cx("star-icon")}
+                          customclass={cx('star-icon')}
                           key={i}
                         ></StarIcons>
                       </button>
@@ -131,10 +133,10 @@ const Modal = ({ userId, hotel, handleModalVisible, userName }) => {
                   name="text"
                   placeholder="Enter your review"
                   id="intro"
-                  className={cx("text-area")}
+                  className={cx('text-area')}
                 ></TextAreaFormik>
               </div>
-              <div className={cx("button-wrapper")}>
+              <div className={cx('button-wrapper')}>
                 <Button
                   type="button"
                   bgGray

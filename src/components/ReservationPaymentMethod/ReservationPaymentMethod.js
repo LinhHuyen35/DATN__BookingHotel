@@ -1,37 +1,37 @@
-import React from "react";
-import classNames from "classnames/bind";
-import styles from "./ReservationPaymentMethod.module.css";
-import avatar from "../../assets/img/Vector.png";
-import Button from "../Button/Button";
-import PaypalCheckoutButton from "../../PaypalCheckoutButton";
+import React from 'react';
+import classNames from 'classnames/bind';
+import styles from './ReservationPaymentMethod.module.css';
+import avatar from '../../assets/img/Vector.png';
+import Button from '../Button/Button';
+import PaypalCheckoutButton from '../../PaypalCheckoutButton';
 
-import { BiArrowBack } from "react-icons/bi";
-import { AiOutlineArrowRight } from "react-icons/ai";
-import { Link } from "react-router-dom";
-import axios from "axios";
+import { BiArrowBack } from 'react-icons/bi';
+import { AiOutlineArrowRight } from 'react-icons/ai';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 const cx = classNames.bind(styles);
 
 function ReservationPaymentMethod({ handleSetCheckBill }) {
   const bookingData = (() => {
-    const storageData = JSON.parse(localStorage.getItem("bookingData"));
+    const storageData = JSON.parse(localStorage.getItem('bookingData'));
     return storageData ?? false;
   })();
 
   const confirmBooking = {
     id: bookingData.id,
     payment: {
-      paypal_payment_id: "HEHE",
-      status: "complete",
+      paypal_payment_id: 'HEHE',
+      status: 'complete',
     },
   };
   const room = (() => {
-    const storageRoomsData = JSON.parse(localStorage.getItem("rooms"));
+    const storageRoomsData = JSON.parse(localStorage.getItem('rooms'));
     return storageRoomsData ?? [];
   })();
   let totalFee = 2;
   const user = (() => {
-    const storageData = JSON.parse(localStorage.getItem("userData"));
+    const storageData = JSON.parse(localStorage.getItem('userData'));
     return storageData ?? [];
   })();
 
@@ -48,7 +48,7 @@ function ReservationPaymentMethod({ handleSetCheckBill }) {
         `${process.env.REACT_APP_HTTSPURL}:${process.env.REACT_APP_BOOKING}/confirm_booking`,
         JSON.stringify(x)
       );
-      alert("successful booking");
+      alert('successful booking');
     } catch (error) {
       console.log(error);
     }
@@ -59,29 +59,29 @@ function ReservationPaymentMethod({ handleSetCheckBill }) {
     price: totalFee,
   };
   return (
-    <div className={cx("reservation-payment-method")}>
-      <div className={cx("information")}>
-        <div className={cx("col-2")}>
-          <div className={cx("title")}>
+    <div className={cx('reservation-payment-method')}>
+      <div className={cx('information')}>
+        <div className={cx('col-2')}>
+          <div className={cx('title')}>
             <div>Address</div>
             <div>Province/ City</div>
             <div>Country/ Region</div>
             <div>Phone</div>
           </div>
-          <div className={cx("desc")}>
-            <div>1A Hoang Sam,Cau Giay</div>
-            <div>HaNoi</div>
+          <div className={cx('desc')}>
+            <div>{user?.user?.address?.detail_address}</div>
+            <div>{user?.user?.address?.province}</div>
             <div>VietNam</div>
-            <div>{user.user.phone}</div>
+            <div>{user?.user?.phone}</div>
           </div>
         </div>
-        <div className={cx("information-wrapper")}>
-          <div className={cx("information-top")}>
-            <div className={cx("avatar-container")}>
-              <img className={cx("avatar")} src={avatar} alt="" />
-              <p className={cx("nickname")}>{user.user.name}</p>
+        <div className={cx('information-wrapper')}>
+          <div className={cx('information-top')}>
+            <div className={cx('avatar-container')}>
+              <img className={cx('avatar')} src={avatar} alt="" />
+              <p className={cx('nickname')}>{user.user.name}</p>
             </div>
-            <Link to="/Account">
+            <Link to="/Account" state={{ host: false }}>
               <i>
                 <svg
                   width="26"
@@ -98,13 +98,13 @@ function ReservationPaymentMethod({ handleSetCheckBill }) {
               </i>
             </Link>
           </div>
-          <div className={cx("information-container")}>
-            <h4 className={cx("header")}>Name:</h4>
-            <p className={cx("header-desc")}>{user.user.name}</p>
+          <div className={cx('information-container')}>
+            <h4 className={cx('header')}>Name:</h4>
+            <p className={cx('header-desc')}>{user.user.name}</p>
           </div>
-          <div className={cx("information-container")}>
-            <h4 className={cx("header")}>Email:</h4>
-            <p className={cx("header-desc")}>{user.user.email}</p>
+          <div className={cx('information-container')}>
+            <h4 className={cx('header')}>Email:</h4>
+            <p className={cx('header-desc')}>{user.user.email}</p>
           </div>
         </div>
       </div>
@@ -114,7 +114,7 @@ function ReservationPaymentMethod({ handleSetCheckBill }) {
         handleSetCheckBill={handleSetCheckBill}
         alertT={alertT}
       />
-      <div className={cx("button-container")}>
+      <div className={cx('button-container')}>
         <Button
           medium
           outline
@@ -129,7 +129,7 @@ function ReservationPaymentMethod({ handleSetCheckBill }) {
           mediumx
           outline
           blue
-          className={cx("continue")}
+          className={cx('continue')}
           rightIcon={<AiOutlineArrowRight />}
         >
           Continue Booking

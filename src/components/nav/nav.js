@@ -23,7 +23,7 @@ function NavBar({ host = false }) {
   const compareData = useSelector(getAllCompareData);
 
   const handleToCompare = () => {
-    if (compareData.length > 0) {
+    if (compareData.length >= 2) {
       navigate('/compare');
     } else {
       alert('Please add at least 2 hotel to compare');
@@ -50,16 +50,26 @@ function NavBar({ host = false }) {
               <ul className={cx('sign-in-option')}>
                 {!account ? (
                   <li className={cx('sign-in-list')}>
-                    <Link to="/SignUp">Sign Up</Link>
+                    <Link to="/SignUp" className="block w-full">
+                      Sign Up
+                    </Link>
                   </li>
                 ) : (
                   <li className={cx('sign-in-list')}>
-                    <Link to="/Account">Account</Link>
+                    <Link
+                      className="block w-full"
+                      to="/Account"
+                      state={host ? { host: true } : { host: false }}
+                    >
+                      Account
+                    </Link>
                   </li>
                 )}
                 {!account ? (
                   <li className={cx('sign-in-list')}>
-                    <Link to="/Login">Login</Link>
+                    <Link to="/Login" className="block w-full">
+                      Login
+                    </Link>
                   </li>
                 ) : (
                   <li className={cx('sign-in-list')} onClick={handleLogOut}>
@@ -74,7 +84,11 @@ function NavBar({ host = false }) {
       >
         <img
           className={cx('user-avatar')}
-          src={account ? avatar : user}
+          src={
+            account
+              ? 'https://img.freepik.com/free-psd/3d-illustration-person-with-sunglasses_23-2149436188.jpg?size=626&ext=jpg&ga=GA1.2.1706574637.1686470385&semt=ais'
+              : user
+          }
           alt="no img"
         />
       </HeadlessTippy>
@@ -119,13 +133,17 @@ function NavBar({ host = false }) {
                 <div className={cx('content')} tabIndex="-1" {...attrs}>
                   <ul className={cx('sign-in-option')}>
                     <li className={cx('sign-in-list')}>
-                      <Link to="/SignUpHost">Sign Up</Link>
+                      <Link to="/SignUpHost" className="block w-full">
+                        Sign Up
+                      </Link>
                     </li>
                     <li
                       className={cx('sign-in-list')}
                       style={{ textAlign: 'start' }}
                     >
-                      <Link to="/LoginHost">Login </Link>
+                      <Link to="/LoginHost" className="block w-full">
+                        Login
+                      </Link>
                     </li>
                   </ul>
                 </div>
@@ -139,7 +157,7 @@ function NavBar({ host = false }) {
         </ul>
       )}
       {host && (
-        <ul className={cx('menu-nav')}>
+        <ul className={cx('menu-nav-host')}>
           <li className={cx('menu-nav__item')}>
             <Link to="/HostProperties" className={cx('menu-nav__link')}>
               List Properties
@@ -170,13 +188,17 @@ function NavBar({ host = false }) {
                       className={cx('sign-in-list')}
                       style={{ textAlign: 'start' }}
                     >
-                      <Link to="/Login">Login </Link>
+                      <Link to="/Login" className="block w-full">
+                        Login
+                      </Link>
                     </li>
                     <li
                       className={cx('sign-in-list')}
                       style={{ textAlign: 'start' }}
                     >
-                      <Link to="/SignUp">Sign Up </Link>
+                      <Link to="/SignUp" className="block w-full">
+                        Sign Up
+                      </Link>
                     </li>
                   </ul>
                 </div>

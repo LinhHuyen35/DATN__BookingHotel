@@ -1,18 +1,19 @@
-import React, { useEffect, useState } from "react";
-import classNames from "classnames/bind";
-import styles from "./Search.module.css";
-import CardList from "../../../components/CardList/CardList";
-import Card from "../../../components/Card/Card";
+import React, { useEffect, useState } from 'react';
+import classNames from 'classnames/bind';
+import styles from './Search.module.css';
+import CardList from '../../../components/CardList/CardList';
+import Card from '../../../components/Card/Card';
 // import data from "../../../json/search.json";
-import LayoutPrimary from "layouts/LayoutPrimary";
-import SearchField from "components/Search-bar/SearchField";
-import axios from "axios";
-import { useLocation } from "react-router-dom";
-import Button from "components/Button/Button";
+import LayoutPrimary from 'layouts/LayoutPrimary';
+import SearchField from 'components/Search-bar/SearchField';
+import axios from 'axios';
+import { useLocation } from 'react-router-dom';
+import Button from 'components/Button/Button';
+import Card2 from 'components/Card/card2';
 const cx = classNames.bind(styles);
-function Search({ handleLike }) {
+function Search({ handleLike, wishlist }) {
   const [data, setData] = useState([]);
-  const [total, setTotal] = useState("");
+  const [total, setTotal] = useState('');
   const [pageNumber, setPageNumber] = useState(1);
   const location = useLocation();
   const { startDate, endDate, name, star_level } = location.state.item;
@@ -42,10 +43,10 @@ function Search({ handleLike }) {
 
   return (
     <LayoutPrimary>
-      <div className={cx("search-wrapper")}>
-        <div className={cx("colleft")}>
-          <div className={cx("container")}>
-            <div className={cx("search-result")}>
+      <div className={cx('search-wrapper')}>
+        <div className={cx('colleft')}>
+          <div className={cx('container')}>
+            <div className={cx('search-result')}>
               {total ? total : 0} result found
             </div>
             <SearchField
@@ -58,15 +59,17 @@ function Search({ handleLike }) {
           <CardList>
             {data?.length > 0 ? (
               data.map((x) => (
-                <Card
+                <Card2
+                  handleLike={handleLike}
                   key={x.id}
                   id={x.id}
                   name={x.name}
-                  starLevel={x.star_level}
-                  address={x.address ? x.address.province : "not yet"}
+                  star={x.star_level}
+                  rate={x.rate}
+                  address={x.address.detail_address}
                   thumbnail={x.list_image[0].url}
-                  handleLike={handleLike}
-                ></Card>
+                  wishlist={wishlist}
+                />
               ))
             ) : (
               <div></div>

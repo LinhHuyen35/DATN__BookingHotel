@@ -61,7 +61,6 @@ const SignUp = ({ role = 'customer' }) => {
       gender: 'male',
       account_id: 0,
       address: {
-        district: 'Quận Từ Liêm',
         province: 'Hà Nội',
         detail_address: '98 Quận Từ Liêm, Hà Nội',
       },
@@ -92,25 +91,33 @@ const SignUp = ({ role = 'customer' }) => {
     setOtp(e.target.value);
   };
 
-  // const checkExistUserName=()=>{
-
-  // }
+  const checkExistUserName = async (data) => {
+    const res = await axios.post(
+      `https://103.184.113.181:448/authentication/check_exist_username?username=${data.email}`
+    );
+    console.log(res.data);
+    if (res.data.code === 400) {
+      return alert(res.data.message);
+    } else {
+      handleSendOtp(data);
+    }
+  };
 
   const onSubmit = (data) => {
-    handleSendOtp(data);
+    checkExistUserName(data);
+    // handleSendOtp(data);
     if (!isValid) return;
+    console.log(data);
     return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve();
-        reset({
-          name: '',
-          phone: '',
-          email: '',
-          password: '',
-          repassword: '',
-          gender: 'male',
-        });
-      }, 2000);
+      resolve();
+      reset({
+        name: '',
+        phone: '',
+        email: '',
+        password: '',
+        repassword: '',
+        gender: 'male',
+      });
     });
   };
 

@@ -48,36 +48,63 @@ const kpiData: Kpi[] = [
   },
 ];
 
-export default function KpiCard() {
-  const [customerData, setCustomerData] = useState([]);
-
+export default function KpiCard({ hotelId }) {
+  // const [customerData, setCustomerData] = useState([]);
+  const [data, setData] = useState([]);
+  console.log(data);
+  const date = new Date();
+  const dateDay = date.toISOString().split('T')[0];
+  console.log(dateDay);
   useEffect(() => {
-    const fetchData = async () => {
-      const res = await axios.get(
-        'https://103.184.113.181:447/kpi/customer?hotel_id=10'
-      );
-      setCustomerData(res.data);
+    // const fetchData = async () => {
+    //   const res = await axios.get(
+    //     'https://103.184.113.181:447/kpi/customer?hotel_id='
+    //   );
+    //   setCustomerData(res.data);
+    // };
+    const fetchDashboardData = async () => {
+      const [res1, res2, res3] = await Promise.all([
+        await axios.get(
+          `https://103.184.113.181:447/kpi/booking?hotel_id=${hotelId}&date=${dateDay}`
+        ),
+        await axios.get(
+          `https://103.184.113.181:447/kpi/customer?hotel_id=${hotelId}&date=${dateDay}`
+        ),
+        await axios.get(
+          `https://103.184.113.181:447/kpi/cancelled?hotel_id=${hotelId}&date=${dateDay}`
+        ),
+      ]);
+      setData([res1.data[0], res2.data[0], res3.data[0]]);
     };
-    fetchData();
+    fetchDashboardData();
+    // fetchData();
   }, []);
-  console.log(customerData);
+
+  console.log(data);
+  const itemTitle = ['Booking', 'Customer', 'Cancelled'];
   return (
     <Grid numColsLg={3} className="gap-6 mt-6">
-      {kpiData.map((item) => (
-        <Card key={item.id}>
+      {data.map((item, index) => (
+        <Card key={item?.id}>
           <Flex alignItems="start">
             <div className="truncate">
-              <Text>{item.title}</Text>
-              <Metric className="truncate">{item.metric}</Metric>
+              <Text>{itemTitle[index]}</Text>
+              <Metric className="truncate">
+                {item ? item.totalNumber : 0}
+              </Metric>
             </div>
-            <BadgeDelta deltaType="increase">{item.delta}</BadgeDelta>
+            <BadgeDelta deltaType="increase">
+              {item ? item.delta : 0}
+            </BadgeDelta>
           </Flex>
           <Flex className="mt-4 space-x-2">
-            <Text className="truncate">{`${item.progress}% (${item.metric})`}</Text>
-            <Text>{item.target}</Text>
+            <Text className="truncate">{`${item ? item.progress : 0}% (${
+              item ? item.totalNumber : 0
+            })`}</Text>
+            <Text>{item ? item.target : 0}</Text>
           </Flex>
           <ProgressBar
-            percentageValue={item.progress}
+            percentageValue={item ? item.progress : 0}
             color="purple"
             className="mt-2"
           />

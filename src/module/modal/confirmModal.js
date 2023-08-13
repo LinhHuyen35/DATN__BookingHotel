@@ -6,13 +6,24 @@ const ConfirmModal = ({
   message = '',
   hiddenFunction = () => {},
   image_url,
+  image_url_update,
 }) => {
   const handleConfirm = () => {
-    if (image_url) {
-      if (image_url.length === 5) {
+    if (image_url_update && image_url_update.length > 0) {
+      if (Object.values(image_url_update[0])?.length === 5) {
         setShowConfirmation(false);
         hiddenFunction();
-      } else if (image_url.length !== 5) {
+        return;
+      } else if (Object.values(image_url_update[0])?.length < 5) {
+        alert('5 images minium');
+        setShowConfirmation(false);
+      }
+    }
+    if (image_url) {
+      if (Object.values(image_url[0]).length === 5) {
+        setShowConfirmation(false);
+        hiddenFunction();
+      } else if (Object.values(image_url[0]) !== 5) {
         alert('5 images minium');
         setShowConfirmation(false);
       }

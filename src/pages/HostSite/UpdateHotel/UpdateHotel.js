@@ -18,6 +18,8 @@ function UpdateHotel() {
 
   const data = location.state.hotel;
   const [showConfirmation, setShowConfirmation] = useState(false);
+  const [imageUrl, setImageUrl] = useState([]);
+
   console.log(data);
   const UpdateSchema = Yup.object().shape({
     name: Yup.string().required('Required'),
@@ -58,9 +60,8 @@ function UpdateHotel() {
           star_level: data.star_level,
           address: {
             id: 126,
-            district: data.address.district,
-            province: data.address.province,
             detail_address: data.address.detail_address,
+            province: data.address.province,
           },
           list_image: data.list_image,
         }}
@@ -70,7 +71,14 @@ function UpdateHotel() {
         validationSchema={UpdateSchema}
         validateOnMount
         onSubmit={(values, { resetForm, setSubmitting }) => {
-          putData(values);
+          const dataToAdd = {
+            ...values,
+            list_image:
+              imageUrl.length > 0
+                ? Object.values(imageUrl[0])
+                : data.list_image,
+          };
+          putData(dataToAdd);
         }}
       >
         {(formik) => (
@@ -80,9 +88,16 @@ function UpdateHotel() {
                 hiddenFunction={formik.handleSubmit}
                 setShowConfirmation={setShowConfirmation}
                 message="Are You Sure"
+                image_url_update={imageUrl}
               />
             )}
-            <Form setShowConfirmation={setShowConfirmation} update></Form>
+            <Form
+              setShowConfirmation={setShowConfirmation}
+              update
+              data={data}
+              imageUrl={imageUrl}
+              setImageUrl={setImageUrl}
+            ></Form>
           </form>
         )}
       </Formik>

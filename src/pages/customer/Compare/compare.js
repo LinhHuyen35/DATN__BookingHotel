@@ -14,11 +14,11 @@ const Compare = () => {
         <table className="table-auto ">
           <thead>
             <tr>
-              <th>Titlle</th>
+              <th className="">Titlle</th>
               {compareData.map((item) => (
-                <Link to={`/Details/:${item.id}`}>
-                  <th key={item.id}>{item.name}</th>
-                </Link>
+                <th className="" key={item.id}>
+                  <Link to={`/Details/:${item.id}`}>{item.name}</Link>
+                </th>
               ))}
             </tr>
           </thead>

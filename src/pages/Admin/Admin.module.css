@@ -24,7 +24,7 @@
 
   .noti_icon::before {
     position: absolute;
-    content: "";
+    content: '';
     height: 30px;
     width: 3px;
     background-color: #dddddd;

@@ -1,5 +1,5 @@
-import CloseIcon from "module/Icons/CloseIcon";
-import React from "react";
+import CloseIcon from 'module/Icons/CloseIcon';
+import React from 'react';
 
 const BookingModalHeader = ({ closeModal, img, item }) => {
   return (
@@ -8,16 +8,16 @@ const BookingModalHeader = ({ closeModal, img, item }) => {
         <span className="absolute left-[34%] h-full bg-black w-[1px] opacity-50"></span>
         <img src={img} alt="" className="w-[150px] h-full" />
         <div className="w-[300px] font-bold text-xl ">
-          <div>Name:{item?.hotel?.name}</div>
+          <div className="mb-1">Name:{item?.hotel?.name}</div>
           <div>Booking id: {item?.id}</div>
           <div>Total Price: {item?.total_price}$</div>
           <div>
-            Status:{" "}
+            Status:{' '}
             <span
               className={`${
-                item.status === "approved" || item.status === "completed"
-                  ? "text-lightGreen"
-                  : "text-[#a8a196]"
+                item.status === 'approved' || item.status === 'completed'
+                  ? 'text-lightGreen'
+                  : 'text-[#a8a196]'
               } `}
             >
               {item?.status}
@@ -33,11 +33,11 @@ const BookingModalHeader = ({ closeModal, img, item }) => {
 };
 
 const BookedRoom = ({ bookedroom }) => {
-  const title = ["Room Type", "Room Name", "Duration", "Price", "Quantity"];
+  const title = ['Room Type', 'Room Name', 'Duration', 'Price', 'Quantity'];
   console.log(bookedroom);
 
   const handleDuration = (day) => {
-    const newData = day.split(" ");
+    const newData = day.split(' ');
     return newData[0];
   };
 
@@ -92,10 +92,10 @@ const BookingModal = ({ closeModal, item }) => {
             <div className="pr-[160px]">{totalQuantity}</div>
           </div>
           <button
-            className="text-2xl font-bold text-right"
+            className="px-6 py-2 text-xl font-bold text-right text-white rounded bg-lightGreen"
             onClick={closeModal}
           >
-            Ok
+            OK
           </button>
         </div>
       </div>

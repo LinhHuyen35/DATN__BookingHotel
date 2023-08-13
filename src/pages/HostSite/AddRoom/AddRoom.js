@@ -1,22 +1,35 @@
-import axios from "axios";
-import LayoutPrimary from "layouts/LayoutPrimary";
-import React, { useEffect, useState } from "react";
-import { BiEdit } from "react-icons/bi";
-import { useLocation, useNavigate } from "react-router-dom";
+import { CloseIcon } from '@chakra-ui/icons';
+import axios from 'axios';
+import LayoutPrimary from 'layouts/LayoutPrimary';
+import React, { useEffect, useState } from 'react';
+import { BiEdit } from 'react-icons/bi';
+import { useLocation, useNavigate } from 'react-router-dom';
+import styles from '../../../module/modal/Modal.module.css';
+import ConfirmModal from 'module/modal/confirmModal';
 
+import classNames from 'classnames/bind';
+
+const cx = classNames.bind(styles);
 const AddRoom = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [rooms, setRooms] = useState([]);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+
+  const deleteRoom = async (hotelId) => {
+    await axios.delete(`https://103.184.113.181:449/room/${hotelId}`);
+    const newRoom = rooms.filter((item) => item.id !== hotelId);
+    setRooms(newRoom);
+  };
 
   const handleAddRoom = () => {
-    navigate("/AddRoomForm", {
-      state: { id: location.state.id, update: "notUpdate" },
+    navigate('/AddRoomForm', {
+      state: { id: location.state.id, update: 'notUpdate' },
     });
   };
   const handleUpdateRoom = (room) => {
-    navigate("/AddRoomForm", {
-      state: { id: location.state.id, roomData: room, update: "update" },
+    navigate('/AddRoomForm', {
+      state: { id: location.state.id, roomData: room, update: 'update' },
     });
   };
   useEffect(() => {
@@ -62,20 +75,41 @@ const AddRoom = () => {
                   key={room.id}
                   className="flex items-center px-6 py-6 rounded bg-[#EFF0F2]"
                 >
+                  {showConfirmation && (
+                    <ConfirmModal
+                      hiddenFunction={() => {
+                        deleteRoom(room.id);
+                      }}
+                      setShowConfirmation={setShowConfirmation}
+                      message="Are You Sure"
+                    />
+                  )}
                   <div className="flex flex-col flex-1">
                     <h2 className="text-xl font-bold">{room.name}</h2>
                     <p className="font-medium opacity-75 text-medium">
                       {room.type}
                     </p>
                   </div>
-                  <i
-                    className="text-2xl cursor-pointer"
-                    onClick={() => {
-                      handleUpdateRoom(room);
-                    }}
-                  >
-                    <BiEdit />
-                  </i>
+                  <div className="flex items-center justify-center gap-2">
+                    <i
+                      className="text-2xl cursor-pointer"
+                      onClick={() => {
+                        handleUpdateRoom(room);
+                      }}
+                    >
+                      <BiEdit />
+                    </i>
+                    <div
+                      className="text-sm cursor-pointer hover:opacity-70"
+                      onClick={() => {
+                        setShowConfirmation(true);
+                      }}
+                    >
+                      <CloseIcon
+                        customclass={cx('close-image-modal')}
+                      ></CloseIcon>
+                    </div>
+                  </div>
                 </div>
               ))
             : null}

@@ -1,3 +1,5 @@
+import { faThumbsUp } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import {
   addToCompare,
@@ -57,6 +59,10 @@ const Card2 = ({
 
   return (
     <div className="relative flex flex-col w-[279px]  shadow-primeShadow rounded">
+      <div className="absolute flex items-center justify-center gap-2 top-4 left-3">
+        <div className="text-[#F8DE22] text-lg">{star}</div>
+        <StarIcons customclass="text-[#F8DE22]"></StarIcons>
+      </div>
       <div
         className="absolute text-3xl hover:text-red-400 top-4 right-4"
         onClick={() => {
@@ -68,7 +74,9 @@ const Card2 = ({
             <AiFillHeart />
           </IconContext.Provider>
         ) : (
-          <AiOutlineHeart />
+          <IconContext.Provider value={{ color: '#fff' }}>
+            <AiOutlineHeart />
+          </IconContext.Provider>
         )}
       </div>
       <Link to={`/Details/${id}`} className="">
@@ -81,8 +89,9 @@ const Card2 = ({
         </div>
         <div className="flex justify-between">
           <div className="flex items-center justify-center gap-1">
-            <StarIcons customclass="text-[#F1C93B]"></StarIcons>
-            <span>{star}</span>
+            {/* <StarIcons customclass="text-[#F1C93B]"></StarIcons> */}
+            <FontAwesomeIcon icon={faThumbsUp} />
+            <span>{rate}</span>
           </div>
           <button
             onClick={handleCompare}

@@ -27,6 +27,15 @@
   text-align: center;
 }
 
+.menu-nav-host {
+  position: absolute;
+  right: -8.91%;
+  left: 29%;
+  top: 27.24%;
+  bottom: 40.24%;
+  text-align: center;
+}
+
 .menu-nav__item {
   min-width: 150px;
   display: inline-block;
@@ -42,6 +51,7 @@
 }
 .menu-nav__item:hover {
   background-color: #9a9a9a;
+  color: #ffffff;
 }
 
 .menu-nav__item a {
@@ -55,7 +65,7 @@
 }
 
 .menu-nav__link::before {
-  content: "";
+  content: '';
   position: absolute;
   bottom: -4px;
   width: 0;
@@ -74,6 +84,7 @@
   height: 40px;
   border-radius: 50%;
   cursor: pointer;
+  z-index: 999;
 }
 
 .wrapper {
@@ -91,15 +102,26 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
+  width: 100%;
 }
 
 .sign-in-option {
   list-style-type: none;
+  text-align: start;
 }
 
 .sign-in-list {
   padding: 4px 10px;
   cursor: pointer;
+}
+
+.sign-in-list:hover a {
+  color: #fff;
+}
+
+.sign-in-list:hover {
+  opacity: 0.7;
+  background-color: #9a9a9a;
 }
 
 .host {

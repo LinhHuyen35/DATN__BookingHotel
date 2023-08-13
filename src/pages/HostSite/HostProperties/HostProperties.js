@@ -1,31 +1,31 @@
-import styles from "./HostProperties.module.css";
-import React, { useEffect, useState } from "react";
-import LayoutPrimary from "layouts/LayoutPrimary";
-import classNames from "classnames/bind";
-import Card from "../../../components/Card/Card";
-import Button from "../../../components/Button/Button";
-import axios from "axios";
-import { Link } from "react-router-dom";
+import styles from './HostProperties.module.css';
+import React, { useEffect, useState } from 'react';
+import LayoutPrimary from 'layouts/LayoutPrimary';
+import classNames from 'classnames/bind';
+import Card from '../../../components/Card/Card';
+import Button from '../../../components/Button/Button';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
+import ConfirmModal from 'module/modal/confirmModal';
 const cx = classNames.bind(styles);
 function HostProperties() {
   const customer = (() => {
-    const storageRoomsData = JSON.parse(localStorage.getItem("userData"));
+    const storageRoomsData = JSON.parse(localStorage.getItem('userData'));
 
     return storageRoomsData ?? [];
   })();
+  const [totalHotels, setTotelHostels] = useState();
 
   const [listHotels, setListHotels] = useState([]);
   const [pageNumber, setPageNumber] = useState(1);
-
   const deleteHotel = async (id) => {
     try {
-      console.log(id);
-      const res = await axios.delete(
+      await axios.delete(
         `${process.env.REACT_APP_HTTSPURL}:${process.env.REACT_APP_HOTEL}/hotel/${id}`
       );
       const newListHotel = listHotels.filter((hotel) => hotel.id !== id);
+      alert('succesfully deleted');
       setListHotels(newListHotel);
-      console.log(res.status);
     } catch (error) {
       if (error.response) {
         console.log(error.response.data);
@@ -34,7 +34,7 @@ function HostProperties() {
       } else if (error.request) {
         console.log(error.request);
       } else {
-        console.log("Error", error.message);
+        console.log('Error', error.message);
       }
       console.log(error.config);
     }
@@ -44,6 +44,7 @@ function HostProperties() {
     const res = await axios.get(
       `${process.env.REACT_APP_HTTSPURL}:${process.env.REACT_APP_HOTEL}/customer/${customer.id}/hotels?page=${page}&limit=6`
     );
+    setTotelHostels(res.data.total_count);
     return res.data.items;
   };
 
@@ -61,8 +62,8 @@ function HostProperties() {
   }, []);
   return (
     <LayoutPrimary host>
-      <div className={cx("top-properties")}>
-        <div className={cx("top-container")}>
+      <div className={cx('top-properties')}>
+        <div className={cx('top-container')}>
           <h2 className="text-3xl font-bold">Listed Properties</h2>
           <Link to="/addproperties">
             <Button blue small>
@@ -70,7 +71,7 @@ function HostProperties() {
             </Button>
           </Link>
         </div>
-        <div className={cx("properties-container")}>
+        <div className={cx('properties-container')}>
           {listHotels
             ? listHotels.map((x) => (
                 <Card
@@ -89,12 +90,14 @@ function HostProperties() {
             : null}
         </div>
         <div className="text-end">
-          <button
-            className="px-4 py-2 text-white rounded bg-blue"
-            onClick={handleLoadMore}
-          >
-            Load More
-          </button>
+          {listHotels.length !== totalHotels && (
+            <button
+              className="px-4 py-2 text-white rounded bg-blue"
+              onClick={handleLoadMore}
+            >
+              Load More
+            </button>
+          )}
         </div>
       </div>
     </LayoutPrimary>

@@ -181,6 +181,12 @@ function ReservationFormFirst({ handleSetCheckBill, userData }) {
       bookedroom: newBookedData,
     });
   };
+
+  const alertLackQuantityOfRoom = async (id) => {
+    const res = await axios.get(`https://103.184.113.181:449/room/${id}`);
+    return alert(`Not enough quantity of room ${res.data.type}`);
+  };
+
   const handleFetchData = async () => {
     if (bookedData.bookedroom.length === 0) {
       return alert('Booking must have at least 1 room');
@@ -193,11 +199,6 @@ function ReservationFormFirst({ handleSetCheckBill, userData }) {
     }
 
     try {
-      console.log({
-        ...bookedData,
-        start_date: formatDate(startDate),
-        end_date: formatDate(endDate),
-      });
       const res = await axios.post(
         `${process.env.REACT_APP_HTTSPURL}:${process.env.REACT_APP_BOOKING}/create_booking`,
         JSON.stringify({
@@ -215,6 +216,10 @@ function ReservationFormFirst({ handleSetCheckBill, userData }) {
       };
       localStorage.setItem('bookingData', JSON.stringify(fakeBookingData));
     } catch (error) {
+      if (error.response.data.error) {
+        const err = error.response.data.error.split(' ');
+        alertLackQuantityOfRoom(err[err.length - 1]);
+      }
       console.log(error);
     }
   };

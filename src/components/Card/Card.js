@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import classNames from 'classnames/bind';
 import styles from './Card.module.css';
 import { IconContext } from 'react-icons';
@@ -14,6 +14,7 @@ import { MdPets } from 'react-icons/md';
 import { Link, useNavigate } from 'react-router-dom';
 import Button from '../Button/Button';
 import StarIcons from 'module/Icons/StarIcon';
+import ConfirmModal from 'module/modal/confirmModal';
 const cx = classNames.bind(styles);
 
 function Card({
@@ -29,7 +30,6 @@ function Card({
   className,
   mb300,
   name,
-
   deleteHotel,
   address,
   thumbnail,
@@ -40,6 +40,8 @@ function Card({
   x,
   ...props
 }) {
+  const [showConfirmation, setShowConfirmation] = useState(false);
+
   const navigate = useNavigate();
   const data = {
     id,
@@ -83,6 +85,15 @@ function Card({
   };
   return (
     <div className={fragment}>
+      {showConfirmation && (
+        <ConfirmModal
+          hiddenFunction={() => {
+            deleteHotel(id);
+          }}
+          setShowConfirmation={setShowConfirmation}
+          message="Are You Sure"
+        /> //alert
+      )}
       {!guide && !row && !wishlists && (
         <div
           onClick={() => {
@@ -185,7 +196,7 @@ function Card({
             rounded
             className={cx('remove')}
             onClick={() => {
-              deleteHotel(id);
+              setShowConfirmation(true);
             }}
           >
             Remove
